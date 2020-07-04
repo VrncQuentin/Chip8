@@ -13,11 +13,17 @@ CC				=	gcc
 MAKE			=	@make
 #################
 
+# Colors.
+#################
+RESET			=	\033[0m
+CYAN			=	\033[1;94m
+#################
 
 # Paths.
 #################
 PINC			=	include
 PSRC			=	src
+PBIN			=	/usr/bin
 #################
 
 
@@ -36,8 +42,10 @@ SRC				=\
 
 # Flags.
 #################
-CPPFLAGS		+=	-iquote $(IP)
+CPPFLAGS		+=	-iquote $(PINC)
 CFLAGS			+=	-Wall -Wextra -Wshadow
+PROD_FLAGS		=	-O2 -march=native
+DEBUG_FLAGS		=	-g3 -fanalyzer
 #################
 
 
@@ -54,11 +62,26 @@ BIN				=	chip-8
 
 
 # Main Rules
+.DEFAULT: build
+
 $(BIN):	$(OBJ)
 	$(CC) $(OBJ) -o $@
 
-debug:	CFLAGS += -g3 -fanalyzer
-debug:	.DEFAULT
+debug:	fclean
+debug:	CFLAGS += $(DEBUG_FLAGS)
+debug:	$(BIN)
+
+build:	fclean
+build:	CFLAGS += $(PROD_FLAGS)
+build:	$(BIN)
+
+install: .DEFAULT
+	@echo -e "$(CYAN)Moving $(BIN) to $(PBIN) (requires sudo)$(RESET)"
+	@sudo mv $(BIN) $(PBIN)
+
+uninstall:
+	@echo -e "$(CYAN)Removing $(BIN) from $(PBIN) (requires sudo)$(RESET)"
+	@sudo rm $(PBIN)/$(BIN)
 # [END] Main Rules
 
 
@@ -79,6 +102,5 @@ fclean: clean
 re:	fclean
 re: .DEFAULT
 
-.PHONY: re fclean clean debug $(BIN)
-.DEFAULT: $(BIN)
+.PHONY: re fclean clean debug build install $(BIN)
 # [END] Misc
