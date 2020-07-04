@@ -1,0 +1,36 @@
+#+TITLE: Chip8
+#+AUTHOR: Quentin Veyrenc
+#+REPO: https://github.com/VrncQuentin/Chip8
+
+This is a toy project to introduce myself to interpreters, compilers.
+
+The goal is to create:
+    - a Chip8 interpreter, /also refered as 'VM' in the following document (and code)/.
+    - a pseudo-assembly chip8 compiler.
+    - a graphical mode for the interpreter.
+
+* Getting Started
+** Installation
+    #+BEGIN_SRC bash
+    git clone https://github.com/VrncQuentin/Chip8
+    cd Chip8
+    make install
+    chip-8 -h
+    #+END_SRC
+
+    If you get something similar to the following you're good to go.
+    #+BEGIN_SRC
+    add help
+    #+END_SRC
+
+** Running
+** Compiling
+* Specifications
+** General information
+    The main ressources I'm following are these three:
+        - [[http://mattmik.com/files/chip8/mastering/chip8.html][Mitt Mikolay's 'Mastering Chip-8' article]]
+        - [[https://github.com/mattmikolay/chip-8/wiki/CHIP%E2%80%908-Technical-Reference][Mitt Mikolay's technical reference]]
+        - [[https://github.com/mattmikolay/chip-8/wiki/CHIP%E2%80%908-Instruction-Set][Instruction Set]]
+
+** Interpreter (VM)
+** Compiler
