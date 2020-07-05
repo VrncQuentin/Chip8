@@ -1,9 +1,9 @@
 #include <iostream>
-#include "Screen.hpp"
+#include "VM.hpp"
 
 int main()
 {
-    Chip8::VM::Screen scr;
+    Chip8::VM::VM chip8;
 
-    scr.dumpScreen();
+    chip8.run();
 }

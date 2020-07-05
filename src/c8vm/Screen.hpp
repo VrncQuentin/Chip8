@@ -6,8 +6,7 @@
 #include <string>
 #include <array>
 
-#include "c8.hpp"
-
+/* Project */
 namespace Chip8::VM {
 
     struct Screen {
@@ -22,7 +21,7 @@ namespace Chip8::VM {
     private: /* Members */
         static constexpr Buffer buf_{0};
 
-    private: /* Helper methods */
+    private: /* Helper Methods */
         static constexpr auto printBorderLine = []()
             {
                 std::cout << std::string(Width + 2, '-') << std::endl;
