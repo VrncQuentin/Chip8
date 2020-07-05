@@ -2,7 +2,7 @@
 #+AUTHOR: Quentin Veyrenc
 #+REPO: https://github.com/VrncQuentin/Chip8
 
-This is a toy project to introduce myself to interpreters, compilers.
+This is a toy project to introduce myself to interpreters & compilers as well as improve my C++ skills
 
 The goal is to create:
     - a Chip8 interpreter, /also refered as 'VM' in the following document (and code)/.

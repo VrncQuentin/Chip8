@@ -1,6 +1,7 @@
 # Prerequisites
 *.d
 *.md
+tests
 
 # Object files
 *.o
