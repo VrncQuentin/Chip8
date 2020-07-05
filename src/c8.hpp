@@ -1,14 +1,8 @@
 #ifndef C8_HPP
 #define C8_HPP
 
-/* LibC & STL */
-#include <cstdint>
-
-/* Project */
-
 namespace Chip8 {
 
-    using byte = uint8_t;
     using opcode = uint16_t;
 
     struct Specs {
