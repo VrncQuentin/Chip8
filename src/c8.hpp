@@ -3,6 +3,7 @@
 
 namespace Chip8 {
 
+    using byte = uint8_t;
     using opcode = uint16_t;
 
     struct Specs {

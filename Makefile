@@ -21,61 +21,32 @@ CYAN			=	\033[1;94m
 
 # Paths.
 #################
-PINC			=	include
-PSRC			=	src
+PBUILD			=	.build
 PBIN			=	/usr/bin
 #################
 
-
-# Source Files.
-#################
-MAIN			=	main.c
-
-SRCS			=\
-	chip8.c
-
-SRC				=\
-	$(addprefix $(PSRC)/, $(SRCS))	\
-	$(MAIN)
-#################
-
-
-# Flags.
-#################
-CPPFLAGS		+=	-iquote $(PINC)
-CFLAGS			+=	-Wall -Wextra -Wshadow
-PROD_FLAGS		=	-O2 -march=native
-DEBUG_FLAGS		=	-g3 -fanalyzer
-#################
-
-
-# Conversions to .o.
-#################
-OBJ				=	$(SRC:.c=.o)
-#################
-
-
 # Names.
 #################
-BIN				=	chip-8
+C8VM			=	c8vm
+C8C				=	c8c
 #################
 
 
 # Main Rules
 .DEFAULT: build
+build: setup-build
+	-@cmake $(OPTIONS) -B $(PBUILD)
+	$(MAKE) --no-print-directory -C $(PBUILD)
 
-$(BIN):	$(OBJ)
-	$(CC) $(OBJ) -o $@
+debug: fclean
+debug: OPTIONS += -DUSE_DEBUG=ON
+debug: .DEFAULT
 
-debug:	fclean
-debug:	CFLAGS += $(DEBUG_FLAGS)
-debug:	$(BIN)
+release: fclean
+release: OPTIONS += -DUSE_PROD=ON
+release: .DEFAULT
 
-build:	fclean
-build:	CFLAGS += $(PROD_FLAGS)
-build:	$(BIN)
-
-install: .DEFAULT
+install: release
 	@echo -e "$(CYAN)Moving $(BIN) to $(PBIN) (requires sudo)$(RESET)"
 	@sudo mv $(BIN) $(PBIN)
 
@@ -84,23 +55,20 @@ uninstall:
 	@sudo rm $(PBIN)/$(BIN)
 # [END] Main Rules
 
-
-# Conversion Rules
-%.o:	%.c
-	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
-#[END] Conversion Rules
-
 # Clean Rules
 clean:
-	$(RM) $(OBJ)
+	$(RM) $(PBUILD)
 
 fclean: clean
-	$(RM) $(BIN)
+	$(RM) $(C8VM) $(C8C)
 # [END] Clean Rules
 
 # Misc
 re:	fclean
 re: .DEFAULT
 
-.PHONY: re fclean clean debug build install $(BIN)
+setup-build:
+	-@mkdir -p $(PBUILD)
+
+.PHONY: build debug release install uninstall clean fclean re setup-build
 # [END] Misc
