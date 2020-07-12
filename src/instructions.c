@@ -1,3 +1,4 @@
+#include <string.h>
 #include <stdio.h>
 #include "interpreter.h"
 #include "instructions.h"
@@ -9,6 +10,7 @@ void insn_x0(struct Chip8 *c, uint16_t op)
     puts(__func__);
     switch (op & 0x00FF) {
     case 0x00E0:
+        clearScreen(c->screen);
         puts("clear screen");
         break;
     case 0x00EE:

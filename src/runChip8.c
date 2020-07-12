@@ -7,6 +7,7 @@ int runChip8(struct Chip8 *c)
 {
     uint8_t *prog = c->memory.beginProg;
 
+    dumpChip8(c);
     do {
         uint16_t op = prog[c->pc] << 8 | prog[c->pc + 1];
         if (op <= 0)

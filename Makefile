@@ -34,7 +34,9 @@ MAIN			=	main.c
 SRCS			=\
 	initChip8.c		\
 	runChip8.c		\
+	dumpChip8.c	\
 	instructions.c	\
+	drawScreen.c	\
 
 SRC				=\
 	$(addprefix $(PSRC)/, $(SRCS))	\

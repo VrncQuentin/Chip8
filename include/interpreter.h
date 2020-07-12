@@ -17,6 +17,7 @@ enum IOChip8 {
 
     SCR_WIDTH = 64,
     SCR_HEIGHT = 32,
+    SCR_SIZE = SCR_WIDTH * SCR_HEIGHT,
 
     FONT_BYTES = 5,
     FONT_COUNT = 16,
@@ -79,5 +80,9 @@ struct Chip8 {
 
 int initChip8(struct Chip8 *c, char const *fp);
 int runChip8(struct Chip8 *c);
+void dumpChip8(const struct Chip8 *c);
+
+void clearScreen(uint8_t screen[SCR_HEIGHT][SCR_WIDTH]);
+void drawScreen(const uint8_t screen[SCR_HEIGHT][SCR_WIDTH]);
 
 #endif /* C8_INTERPRETER_H */
