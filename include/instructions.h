@@ -25,13 +25,13 @@ typedef void (*opfn)(struct Chip8 *c, uint16_t op);
 void insn_x0(struct Chip8 *c, uint16_t op);
 void c8_jump(struct Chip8 *c, uint16_t op);
 void c8_call(struct Chip8 *c, uint16_t op);
-void c8_isEq(struct Chip8 *c, uint16_t op);
-void c8_isDiff(struct Chip8 *c, uint16_t op);
-void insn_x5(struct Chip8 *c, uint16_t op);
+void c8_isEqXNN(struct Chip8 *c, uint16_t op);
+void c8_isDiffXNN(struct Chip8 *c, uint16_t op);
+void c8_isEqXY(struct Chip8 *c, uint16_t op);
 void c8_set(struct Chip8 *c, uint16_t op);
 void insn_x7(struct Chip8 *c, uint16_t op);
 void insn_x8(struct Chip8 *c, uint16_t op);
-void insn_x9(struct Chip8 *c, uint16_t op);
+void c8_isDiffXY(struct Chip8 *c, uint16_t op);
 void insn_xA(struct Chip8 *c, uint16_t op);
 void insn_xB(struct Chip8 *c, uint16_t op);
 void insn_xC(struct Chip8 *c, uint16_t op);
@@ -44,13 +44,13 @@ void insn_xF(struct Chip8 *c, uint16_t op);
         insn_x0,                                \
         c8_jump,                                \
         c8_call,                                \
-        c8_isEq,                                \
-        c8_isDiff,                              \
-        insn_x5,                                \
+        c8_isEqXNN,                             \
+        c8_isDiffXNN,                           \
+        c8_isEqXY,                              \
         c8_set,                                 \
         insn_x7,                                \
         insn_x8,                                \
-        insn_x9,                                \
+        c8_isDiffXY,                            \
         insn_xA,                                \
         insn_xB,                                \
         insn_xC,                                \

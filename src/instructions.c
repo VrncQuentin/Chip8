@@ -4,11 +4,11 @@
 #include "interpreter.h"
 #include "instructions.h"
 
-#define LI(op, ...)                                     \
-    do {                                                \
-        printf("\e[1m%s(%04X)\e[0m:\t", __func__, op);  \
-        printf(__VA_ARGS__);                            \
-        printf("\n");                                   \
+#define LI(op, ...)                                         \
+    do {                                                    \
+        printf("\e[1m%s\e[0m<%04X>:\t", __func__ + 3, op);  \
+        printf(__VA_ARGS__);                                \
+        printf("\n");                                       \
     } while (0)
 
 void insn_x0(struct Chip8 *c, uint16_t op)
@@ -48,30 +48,34 @@ void c8_call(struct Chip8 *c, uint16_t op)
     c->pc = addr;
 }
 
-void c8_isEq(struct Chip8 *c, uint16_t op)
+void c8_isEqXNN(struct Chip8 *c, uint16_t op)
 {
     uint8_t regData = c->regs.data[IRX(op)];
     uint8_t data = INN(op);
 
-    LI(op, "<reg(%x): %02x> == <data: %02x>", regData, data);
+    LI(op, "<reg(%x): %02x> == <data: %02x>", IRX(op), regData, data);
     if (regData == data)
         c->pc += 2;
 }
 
-void c8_isDiff(struct Chip8 *c, uint16_t op)
+void c8_isDiffXNN(struct Chip8 *c, uint16_t op)
 {
     uint8_t regData = c->regs.data[IRX(op)];
     uint8_t data = INN(op);
 
-    LI(op, "<reg(%x): %02x> != <data: %02x>", regData, data);
+    LI(op, "<reg(%x): %02x> != <data: %02x>", IRX(op), regData, data);
     if (regData != data)
         c->pc += 2;
 }
 
-void insn_x5(struct Chip8 *c, uint16_t op)
+void c8_isEqXY(struct Chip8 *c, uint16_t op)
 {
-    LI(op, "%c", 0);
-    (void)c;
+    uint8_t regX = c->regs.data[IRX(op)];
+    uint8_t regY = c->regs.data[IRY(op)];
+
+    LI(op, "<reg(%x): %02x> == <reg(%x): %02x>", IRX(op), regX, IRY(op), regY);
+    if (regX == regY)
+        c->pc += 2;
 }
 
 void c8_set(struct Chip8 *c, uint16_t op)
@@ -95,10 +99,14 @@ void insn_x8(struct Chip8 *c, uint16_t op)
     (void)c;
 }
 
-void insn_x9(struct Chip8 *c, uint16_t op)
+void c8_isDiffXY(struct Chip8 *c, uint16_t op)
 {
-    LI(op, "%c", 0);
-    (void)c;
+    uint8_t regX = c->regs.data[IRX(op)];
+    uint8_t regY = c->regs.data[IRY(op)];
+
+    LI(op, "<reg(%x): %02x> != <reg(%x): %02x>", IRX(op), regX, IRY(op), regY);
+    if (regX != regY)
+        c->pc += 2;
 }
 
 void insn_xA(struct Chip8 *c, uint16_t op)
