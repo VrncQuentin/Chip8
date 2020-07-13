@@ -87,10 +87,13 @@ void c8_set(struct Chip8 *c, uint16_t op)
     c->regs.data[reg] = val;
 }
 
-void insn_x7(struct Chip8 *c, uint16_t op)
+void c8_addXNN(struct Chip8 *c, uint16_t op)
 {
-    LI(op, "%c", 0);
-    (void)c;
+    uint8_t reg = IRX(op);
+    uint8_t val = INN(op);
+
+    LI(op, "<%d: %02x>", reg, val);
+    c->regs.data[reg] += val;
 }
 
 void insn_x8(struct Chip8 *c, uint16_t op)

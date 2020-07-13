@@ -29,7 +29,7 @@ void c8_isEqXNN(struct Chip8 *c, uint16_t op);
 void c8_isDiffXNN(struct Chip8 *c, uint16_t op);
 void c8_isEqXY(struct Chip8 *c, uint16_t op);
 void c8_set(struct Chip8 *c, uint16_t op);
-void insn_x7(struct Chip8 *c, uint16_t op);
+void c8_addXNN(struct Chip8 *c, uint16_t op);
 void insn_x8(struct Chip8 *c, uint16_t op);
 void c8_isDiffXY(struct Chip8 *c, uint16_t op);
 void insn_xA(struct Chip8 *c, uint16_t op);
@@ -48,7 +48,7 @@ void insn_xF(struct Chip8 *c, uint16_t op);
         c8_isDiffXNN,                           \
         c8_isEqXY,                              \
         c8_set,                                 \
-        insn_x7,                                \
+        c8_addXNN,                                \
         insn_x8,                                \
         c8_isDiffXY,                            \
         insn_xA,                                \
