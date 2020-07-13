@@ -37,28 +37,28 @@ void insn_x9(struct Chip8 *c, uint16_t op);
 void insn_xA(struct Chip8 *c, uint16_t op);
 void insn_xB(struct Chip8 *c, uint16_t op);
 void insn_xC(struct Chip8 *c, uint16_t op);
-void insn_xD(struct Chip8 *c, uint16_t op);
+void c8_display(struct Chip8 *c, uint16_t op);
 void insn_xE(struct Chip8 *c, uint16_t op);
 void insn_xF(struct Chip8 *c, uint16_t op);
 
-#define USE_MAJORS_TAB                             \
-    static const opfn MAJORS_TAB[MAJORS] = {        \
-        insn_x0,                                   \
-        c8_jump,                                   \
-        c8_call,                                   \
-        insn_x3,                                   \
-        insn_x4,                                   \
-        insn_x5,                                   \
-        c8_set,                                    \
-        insn_x7,                                   \
-        insn_x8,                                   \
-        insn_x9,                                   \
-        insn_xA,                                   \
-        insn_xB,                                   \
-        insn_xC,                                   \
-        insn_xD,                                   \
-        insn_xE,                                   \
-        insn_xF                                    \
+#define USE_MAJORS_TAB                          \
+    static const opfn MAJORS_TAB[MAJORS] = {    \
+        insn_x0,                                \
+        c8_jump,                                \
+        c8_call,                                \
+        insn_x3,                                \
+        insn_x4,                                \
+        insn_x5,                                \
+        c8_set,                                 \
+        insn_x7,                                \
+        insn_x8,                                \
+        insn_x9,                                \
+        insn_xA,                                \
+        insn_xB,                                \
+        insn_xC,                                \
+        c8_display,                             \
+        insn_xE,                                \
+        insn_xF                                 \
     }
 
 __attribute__((noreturn, always_inline))
