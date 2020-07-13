@@ -85,6 +85,7 @@ struct Chip8 {
 int initChip8(struct Chip8 *c, char const *fp);
 int runChip8(struct Chip8 *c);
 void dumpChip8(const struct Chip8 *c);
+void dumpPC(const uint16_t pc);
 
 void clearScreen(uint8_t screen[SCR_HEIGHT][SCR_WIDTH]);
 void drawScreen(const uint8_t screen[SCR_HEIGHT][SCR_WIDTH]);

@@ -51,9 +51,9 @@ void dumpRAM(const struct RAM *r)
     }
 }
 
-static void dumpPC(uint16_t pc)
+void dumpPC(const uint16_t pc)
 {
-    printf("\e[1m*** PC\e[0m: <%d>\n\n", pc);
+    printf("\e[1m*** PC\e[0m: <%04x>\n\n", pc);
 }
 
 void dumpTimers(const struct Timers *t)
