@@ -1,7 +1,7 @@
 #include "interpreter.h"
 #include "instructions.h"
 
-void set(struct Chip8 *c, uint16_t op)
+void xnnSet(struct Chip8 *c, uint16_t op)
 {
     uint8_t reg = IRX(op);
     uint8_t val = INN(op);

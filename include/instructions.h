@@ -23,10 +23,9 @@ struct Chip8;
 typedef void (*opfn)(struct Chip8 *c, uint16_t op);
 
 /* Flow */
-void clear_or_return(struct Chip8 *c, uint16_t op);
 void jump(struct Chip8 *c, uint16_t op);
 void call(struct Chip8 *c, uint16_t op);
-void display(struct Chip8 *c, uint16_t op);
+//void _return(struct Chip8 *c, uint16_t op);
 
 /* Equality */
 void xnnSkipEqual(struct Chip8 *c, uint16_t op);
@@ -35,11 +34,18 @@ void xySkipEqual(struct Chip8 *c, uint16_t op);
 void xySkipDiff(struct Chip8 *c, uint16_t op);
 
 /* Math & Logic */
-void set(struct Chip8 *c, uint16_t op);
+void xnnSet(struct Chip8 *c, uint16_t op); /* Sets data reg(X) with NN */
+void innnSet(struct Chip8 *c, uint16_t op); /* Sets addr reg(i) with NNN */
 void xnnAdd(struct Chip8 *c, uint16_t op);
 void doLogicAndMathOP(struct Chip8 *c, uint16_t op);
 
-void insn_xA(struct Chip8 *c, uint16_t op);
+/* Graphical */
+//void clear(struct Chip8 *c, uint16_t op);
+void display(struct Chip8 *c, uint16_t op);
+
+/* Misc */
+void clear_or_return(struct Chip8 *c, uint16_t op);
+
 void insn_xB(struct Chip8 *c, uint16_t op);
 void insn_xC(struct Chip8 *c, uint16_t op);
 void insn_xE(struct Chip8 *c, uint16_t op);
@@ -47,20 +53,25 @@ void insn_xF(struct Chip8 *c, uint16_t op);
 
 #define USE_MAJORS_TAB                          \
     static const opfn MAJORS_TAB[MAJORS] = {    \
-        [0x0] = clear_or_return,                \
+        /* Inconditional */                     \
         [0x1] = jump,                           \
         [0x2] = call,                           \
+        /* Conditional */                       \
         [0x3] = xnnSkipEqual,                   \
         [0x4] = xnnSkipDiff,                    \
         [0x5] = xySkipEqual,                    \
-        [0x6] = set,                            \
+        [0x9] = xySkipDiff,                     \
+        /* Math & Logic */                      \
+        [0xA] = innnSet,                        \
+        [0x6] = xnnSet,                         \
         [0x7] = xnnAdd,                         \
         [0x8] = doLogicAndMathOP,               \
-        [0x9] = xySkipDiff,                     \
-        [0xA] = insn_xA,                        \
+        /* Graphical */                         \
+        [0xD] = display,                        \
+        /* Misc */                              \
+        [0x0] = clear_or_return,                \
         [0xB] = insn_xB,                        \
         [0xC] = insn_xC,                        \
-        [0xD] = display,                        \
         [0xE] = insn_xE,                        \
         [0xF] = insn_xF                         \
     }
