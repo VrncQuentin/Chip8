@@ -17,7 +17,7 @@ void c8_call(struct Chip8 *c, uint16_t op);
 void insn_x3(struct Chip8 *c, uint16_t op);
 void insn_x4(struct Chip8 *c, uint16_t op);
 void insn_x5(struct Chip8 *c, uint16_t op);
-void insn_x6(struct Chip8 *c, uint16_t op);
+void c8_set(struct Chip8 *c, uint16_t op);
 void insn_x7(struct Chip8 *c, uint16_t op);
 void insn_x8(struct Chip8 *c, uint16_t op);
 void insn_x9(struct Chip8 *c, uint16_t op);
@@ -36,7 +36,7 @@ void insn_xF(struct Chip8 *c, uint16_t op);
         insn_x3,                                   \
         insn_x4,                                   \
         insn_x5,                                   \
-        insn_x6,                                   \
+        c8_set,                                    \
         insn_x7,                                   \
         insn_x8,                                   \
         insn_x9,                                   \
