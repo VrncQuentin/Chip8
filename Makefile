@@ -16,6 +16,7 @@ MAKE			=	@make
 # Paths.
 #################
 PINC			=	include
+PINSTR			=	instructions
 PSRC			=	src
 #################
 
@@ -31,15 +32,21 @@ LDFLAGS			+=
 #################
 MAIN			=	main.c
 
+INSTR			=\
+	equality.c		\
+	flow.c			\
+	math_logic.c	\
+
 SRCS			=\
 	initChip8.c		\
 	runChip8.c		\
-	dumpChip8.c	\
+	dumpChip8.c		\
 	instructions.c	\
 	drawScreen.c	\
 
 SRC				=\
-	$(addprefix $(PSRC)/, $(SRCS))	\
+	$(addprefix $(PINSTR)/, $(INSTR))	\
+	$(addprefix $(PSRC)/, $(SRCS))		\
 	$(MAIN)
 #################
 

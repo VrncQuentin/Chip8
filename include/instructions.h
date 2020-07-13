@@ -22,41 +22,56 @@ enum nibbles {
 struct Chip8;
 typedef void (*opfn)(struct Chip8 *c, uint16_t op);
 
-void insn_x0(struct Chip8 *c, uint16_t op);
-void c8_jump(struct Chip8 *c, uint16_t op);
-void c8_call(struct Chip8 *c, uint16_t op);
-void c8_isEqXNN(struct Chip8 *c, uint16_t op);
-void c8_isDiffXNN(struct Chip8 *c, uint16_t op);
-void c8_isEqXY(struct Chip8 *c, uint16_t op);
-void c8_set(struct Chip8 *c, uint16_t op);
-void c8_addXNN(struct Chip8 *c, uint16_t op);
-void insn_x8(struct Chip8 *c, uint16_t op);
-void c8_isDiffXY(struct Chip8 *c, uint16_t op);
+/* Flow */
+void clear_or_return(struct Chip8 *c, uint16_t op);
+void jump(struct Chip8 *c, uint16_t op);
+void call(struct Chip8 *c, uint16_t op);
+void display(struct Chip8 *c, uint16_t op);
+
+/* Equality */
+void xnnSkipEqual(struct Chip8 *c, uint16_t op);
+void xnnSkipDiff(struct Chip8 *c, uint16_t op);
+void xySkipEqual(struct Chip8 *c, uint16_t op);
+void xySkipDiff(struct Chip8 *c, uint16_t op);
+
+/* Math & Logic */
+void set(struct Chip8 *c, uint16_t op);
+void xnnAdd(struct Chip8 *c, uint16_t op);
+void doLogicAndMathOP(struct Chip8 *c, uint16_t op);
+
 void insn_xA(struct Chip8 *c, uint16_t op);
 void insn_xB(struct Chip8 *c, uint16_t op);
 void insn_xC(struct Chip8 *c, uint16_t op);
-void c8_display(struct Chip8 *c, uint16_t op);
 void insn_xE(struct Chip8 *c, uint16_t op);
 void insn_xF(struct Chip8 *c, uint16_t op);
 
 #define USE_MAJORS_TAB                          \
     static const opfn MAJORS_TAB[MAJORS] = {    \
-        insn_x0,                                \
-        c8_jump,                                \
-        c8_call,                                \
-        c8_isEqXNN,                             \
-        c8_isDiffXNN,                           \
-        c8_isEqXY,                              \
-        c8_set,                                 \
-        c8_addXNN,                                \
-        insn_x8,                                \
-        c8_isDiffXY,                            \
-        insn_xA,                                \
-        insn_xB,                                \
-        insn_xC,                                \
-        c8_display,                             \
-        insn_xE,                                \
-        insn_xF                                 \
+        [0x0] = clear_or_return,                \
+        [0x1] = jump,                           \
+        [0x2] = call,                           \
+        [0x3] = xnnSkipEqual,                   \
+        [0x4] = xnnSkipDiff,                    \
+        [0x5] = xySkipEqual,                    \
+        [0x6] = set,                            \
+        [0x7] = xnnAdd,                         \
+        [0x8] = doLogicAndMathOP,               \
+        [0x9] = xySkipDiff,                     \
+        [0xA] = insn_xA,                        \
+        [0xB] = insn_xB,                        \
+        [0xC] = insn_xC,                        \
+        [0xD] = display,                        \
+        [0xE] = insn_xE,                        \
+        [0xF] = insn_xF                         \
     }
+
+#include <stdio.h>
+#define LI(op, ...)                                     \
+    do {                                                \
+        printf("\e[1m%s\e[0m<%04X>:\t", __func__, op);  \
+        printf(__VA_ARGS__);                            \
+        printf("\n");                                   \
+    } while (0)
+
 
 #endif /* C8_INTERP_INSTRUCTIONS_H */
