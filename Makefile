@@ -57,8 +57,9 @@ BIN				=	c8i
 # Main Rules
 all:	$(BIN)
 $(BIN):	$(OBJ)
-	$(CC) $(OBJ) -o $(BIN) $(LDFLAGS) -g3
+	$(CC) $(OBJ) -o $(BIN) $(LDFLAGS)
 
+debug:	CPPFLAGS += -DSCREEN
 debug:	CFLAGS += -g3
 debug:	all
 # [END] Main Rules
@@ -66,7 +67,7 @@ debug:	all
 
 # Conversion Rules
 %.o:	%.c
-	$(CC) $(CFLAGS) $(CPPFLAGS) -g3 -c $< -o $@
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 #[END] Conversion Rules
 
 # Clean Rules

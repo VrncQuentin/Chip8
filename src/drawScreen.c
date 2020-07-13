@@ -4,6 +4,7 @@
 
 void drawScreen(const uint8_t screen[SCR_HEIGHT][SCR_WIDTH])
 {
+#ifdef SCREEN
     char top_bot_line[SCR_WIDTH + 3] = {0};
     char buf[SCR_WIDTH + 3] = {[0] = '|', [SCR_WIDTH + 1] = '|'};
 
@@ -16,6 +17,7 @@ void drawScreen(const uint8_t screen[SCR_HEIGHT][SCR_WIDTH])
         puts(buf);
     }
     puts(top_bot_line);
+#endif
 }
 
 void clearScreen(uint8_t screen[SCR_HEIGHT][SCR_WIDTH])

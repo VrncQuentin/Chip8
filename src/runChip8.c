@@ -3,20 +3,22 @@
 
 USE_MAJORS_TAB;
 
+static uint16_t getNextInstr(const uint8_t *prog, const uint16_t pc)
+{
+    return prog[pc] << 8 | prog[pc + 1];;
+}
+
 int runChip8(struct Chip8 *c)
 {
     uint8_t *prog = c->memory.beginProg;
+    uint16_t op;
 
-    dumpChip8(c);
-    do {
-        uint16_t op = prog[c->pc] << 8 | prog[c->pc + 1];
-        if (op <= 0)
-            break;
+    while ((op = getNextInstr(prog, c->pc))) {
         c->pc += 2;
         uint16_t major = MAJOR_IDX(op);
         if (major >= MAJORS)
-            exitBadInstruction(op);
+            continue;
         MAJORS_TAB[major](c, op);
-    } while (c->pc < c->memory.progSize);
+    };
     return 0;
 }
