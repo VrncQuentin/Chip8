@@ -49,6 +49,7 @@ struct RAM {
     size_t progSize;
     uint8_t *fonts;
 };
+void dumpRAM(const struct RAM *r);
 
 enum regsName {
     v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, vA, vB, vC, vD, vE, vF, vMax
@@ -58,16 +59,19 @@ struct Regs {
     uint8_t data[vMax];
     uint16_t addr;
 };
+void dumpRegs(const struct Regs *r);
 
 struct Timers {
     uint8_t delay;
     uint8_t sound;
 };
+void dumpTimers(const struct Timers *t);
 
 struct Stack {
     uint16_t stack[STACKS_NB];
     uint16_t sp;
 };
+void dumpStack(const struct Stack *s);
 
 struct Chip8 {
     struct RAM memory;

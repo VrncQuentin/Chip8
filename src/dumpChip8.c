@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "interpreter.h"
 
-static void dumpRegs(const struct Regs *r)
+void dumpRegs(const struct Regs *r)
 {
     printf("\e[1m*** Regs\e[0m\n\e[1maddr\e[0m:\t<%d>\n", r->addr);
     printf("\e[1mdata\e[0m:\t<%02x", r->data[v0]);
@@ -10,7 +10,7 @@ static void dumpRegs(const struct Regs *r)
     printf(">\n\n");
 }
 
-static void dumpStack(const struct Stack *s)
+void dumpStack(const struct Stack *s)
 {
     printf("\e[1m*** Stack\e[0m\n");
     printf("\e[1msp\e[0m:\t<%d>\n\e[1mctt\e[0m:\t<%02x", s->sp, s->stack[0]);
@@ -33,7 +33,7 @@ static uint16_t getPosYX(uint16_t y, uint16_t x)
     return getY(y) + x;
 }
 
-static void dumpRAM(const struct RAM *r)
+void dumpRAM(const struct RAM *r)
 {
     printf("\e[1m*** Memory\e[0m: %zu\n", r->progSize);
     for (uint16_t y = 0; y != lines; y += 1) {
@@ -56,7 +56,7 @@ static void dumpPC(uint16_t pc)
     printf("\e[1m*** PC\e[0m: <%d>\n\n", pc);
 }
 
-static void dumpTimers(const struct Timers *t)
+void dumpTimers(const struct Timers *t)
 {
     printf("\e[1m*** Timers\e[0m\n");
     printf("\e[1mdelay\e[0m: <%d>\n", t->delay);
