@@ -3,32 +3,59 @@
 #include "interpreter.h"
 #include "instructions.h"
 
+#define LI(...)                                  \
+    do {                                         \
+        printf("\e[1m%s\e[0m: ", __func__);      \
+        printf(__VA_ARGS__);                     \
+        printf("\n");                            \
+    } while (0)
+
+#define case  break; case
+#define default break; default
+
+static void c8_clear(uint8_t screen[SCR_HEIGHT][SCR_WIDTH])
+{
+    clearScreen(screen);
+    LI("done");
+}
+
+static void c8_return(struct Stack *s, uint16_t *pc)
+{
+    uint16_t addr = s->stack[--s->sp];
+
+    LI("<SP: %d> <OLD: %04x> <poped(PC): %04x>", s->sp, *pc, addr);
+    *pc = addr;
+}
+
 void insn_x0(struct Chip8 *c, uint16_t op)
 {
     // 0xNNN is ignored because we don't run on legacy hardware and wont/cant
     // execute subroutines written in machine lang of these computers
-    puts(__func__);
     switch (op & 0x00FF) {
     case 0x00E0:
-        clearScreen(c->screen);
-        puts("clear screen");
-        break;
+        c8_clear(c->screen);
     case 0x00EE:
-        puts("return");
-        break;
+        c8_return(&c->stack, &c->pc);
     default:
         exitBadInstruction(op);
     }
 }
 
-void insn_x1(struct Chip8 *c, uint16_t op)
+void c8_jump(struct Chip8 *c, uint16_t op)
 {
-    puts(__func__);
+    uint16_t addr = op & 0x0FFF;
+
+    LI("<OLD: %04x> <PC: %04x>", c->pc, addr);
+    c->pc = addr;
 }
 
-void insn_x2(struct Chip8 *c, uint16_t op)
+void c8_call(struct Chip8 *c, uint16_t op)
 {
-    puts(__func__);
+    uint16_t addr = op & 0x0FFF;
+
+    LI("<SP: %d> <saved(OLD): %04x> <PC: %04x>", c->stack.sp, c->pc, addr);
+    c->stack.stack[c->stack.sp++] = c->pc;
+    c->pc = addr;
 }
 
 void insn_x3(struct Chip8 *c, uint16_t op)
