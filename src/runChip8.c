@@ -16,7 +16,7 @@ int runChip8(struct Chip8 *c)
         uint16_t major = MAJOR_IDX(op);
         if (major >= MAJORS)
             exitBadInstruction(op);
-        MAJORS_FN[major](c, op);
+        MAJORS_TAB[major](c, op);
     } while (c->pc < c->memory.progSize);
     return 0;
 }

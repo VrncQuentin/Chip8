@@ -5,8 +5,21 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define MAJOR_IDX(op) ((op & 0xF000) / 0x1000)
+/* Majors tell us what kind of instructions we're dealing with */
+#define MAJOR_IDX(op) ((op & 0xF000) >> 12)
 #define MAJORS        (MAJOR_IDX(0xF000) + 1)
+
+/* Instruction nibbles give us informations to handle the major */
+#define IRX(op) ((op & 0x0F00) >> 8)
+#define IRY(op) ((op & 0x00F0) >> 4)
+#define IN(op)   (op & 0x000F)
+#define INN(op)  (op & 0x00FF)
+#define INNN(op) (op & 0x0FFF)
+
+enum nibbles {
+    ICLEAR = 0x00E0,
+    IRETURN = 0x00EE
+};
 
 struct Chip8;
 typedef void (*opfn)(struct Chip8 *c, uint16_t op);
@@ -29,7 +42,7 @@ void insn_xE(struct Chip8 *c, uint16_t op);
 void insn_xF(struct Chip8 *c, uint16_t op);
 
 #define USE_MAJORS_TAB                             \
-    static const opfn MAJORS_FN[MAJORS] = {        \
+    static const opfn MAJORS_TAB[MAJORS] = {        \
         insn_x0,                                   \
         c8_jump,                                   \
         c8_call,                                   \
