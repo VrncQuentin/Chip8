@@ -13,7 +13,7 @@ static opfn decode(const uint16_t op)
     USE_MAJORS_TAB;
 
     if (major >= MAJORS)
-        continue;
+        return NULL;
     return MAJORS_TAB[major];
 }
 
@@ -25,7 +25,7 @@ int runChip8(struct Chip8 *c)
 
     while ((op = fetch(prog, c->pc))) {
         c->pc += 2;
-        if (!(execute = decode()))
+        if (!(execute = decode(op)))
             continue;
         execute(c, op);
     };
