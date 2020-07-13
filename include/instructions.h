@@ -2,8 +2,6 @@
 #define C8_INTERP_INSTRUCTIONS_H
 
 #include <stdint.h>
-#include <stdlib.h>
-#include <stdio.h>
 
 /* Majors tell us what kind of instructions we're dealing with */
 #define MAJOR_IDX(op) ((op & 0xF000) >> 12)
@@ -27,8 +25,8 @@ typedef void (*opfn)(struct Chip8 *c, uint16_t op);
 void insn_x0(struct Chip8 *c, uint16_t op);
 void c8_jump(struct Chip8 *c, uint16_t op);
 void c8_call(struct Chip8 *c, uint16_t op);
-void insn_x3(struct Chip8 *c, uint16_t op);
-void insn_x4(struct Chip8 *c, uint16_t op);
+void c8_isEq(struct Chip8 *c, uint16_t op);
+void c8_isDiff(struct Chip8 *c, uint16_t op);
 void insn_x5(struct Chip8 *c, uint16_t op);
 void c8_set(struct Chip8 *c, uint16_t op);
 void insn_x7(struct Chip8 *c, uint16_t op);
@@ -46,8 +44,8 @@ void insn_xF(struct Chip8 *c, uint16_t op);
         insn_x0,                                \
         c8_jump,                                \
         c8_call,                                \
-        insn_x3,                                \
-        insn_x4,                                \
+        c8_isEq,                                \
+        c8_isDiff,                              \
         insn_x5,                                \
         c8_set,                                 \
         insn_x7,                                \
@@ -60,13 +58,5 @@ void insn_xF(struct Chip8 *c, uint16_t op);
         insn_xE,                                \
         insn_xF                                 \
     }
-
-__attribute__((noreturn, always_inline))
-static inline void exitBadInstruction(uint16_t op)
-{
-    fprintf(stderr, "unsupported opcode 0x%04x\n", op);
-    exit(2);
-}
-
 
 #endif /* C8_INTERP_INSTRUCTIONS_H */

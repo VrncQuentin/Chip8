@@ -4,33 +4,12 @@
 #include "interpreter.h"
 #include "instructions.h"
 
-#define LI(...)                                 \
-    do {                                        \
-        printf("\e[1m%s\e[0m: ", __func__);    \
-        printf(__VA_ARGS__);                    \
-        printf("\n");                           \
+#define LI(op, ...)                                     \
+    do {                                                \
+        printf("\e[1m%s(%04X)\e[0m:\t", __func__, op);  \
+        printf(__VA_ARGS__);                            \
+        printf("\n");                                   \
     } while (0)
-
-#define case  break; case
-#define default break; default
-
-static void c8_clear(uint8_t screen[SCR_HEIGHT][SCR_WIDTH])
-{
-    clearScreen(screen);
-    LI("done");
-}
-
-static void c8_return(struct Stack *s, uint16_t *pc)
-{
-    if (s->sp == 0) {
-        LI("returning from main subroutine, bye o/");
-        exit(0);
-    }
-    uint16_t addr = s->stack[--s->sp];
-
-    LI("<SP: %d> <OLD: %04x> <poped(PC): %04x>", s->sp, *pc, addr);
-    *pc = addr;
-}
 
 void insn_x0(struct Chip8 *c, uint16_t op)
 {
@@ -38,11 +17,17 @@ void insn_x0(struct Chip8 *c, uint16_t op)
     // execute subroutines written in machine lang of these computers
     switch (INN(op)) {
     case ICLEAR:
-        c8_clear(c->screen);
+        clearScreen(c->screen);
+        LI(op, "clear");
+        break;
     case IRETURN:
-        c8_return(&c->stack, &c->pc);
-    default:
-        exitBadInstruction(op);
+        if (c->stack.sp == 0) {
+            LI(op, "returning from main subroutine, bye o/");
+            exit(0);
+        }
+        uint16_t addr = c->stack.stack[--c->stack.sp];
+        LI(op, "<SP: %d> <OLD: %04x> <poped(PC): %04x>", c->stack.sp, c->pc, addr);
+        c->pc = addr;
     }
 }
 
@@ -50,7 +35,7 @@ void c8_jump(struct Chip8 *c, uint16_t op)
 {
     uint16_t addr = INNN(op);
 
-    LI("(op: %04x) <OLD: %04x> <PC: %04x>", op, c->pc, addr);
+    LI(op, "<OLD: %04x> <PC: %04x>", c->pc, addr);
     c->pc = addr;
 }
 
@@ -58,25 +43,35 @@ void c8_call(struct Chip8 *c, uint16_t op)
 {
     uint16_t addr = INNN(op);
 
-    LI("(op: %04x) <SP: %d> <saved(OLD): %04x> <PC: %04x>",
-       op, c->stack.sp, c->pc, addr);
+    LI(op, "<SP: %d> <saved(OLD): %04x> <PC: %04x>", c->stack.sp, c->pc, addr);
     c->stack.stack[c->stack.sp++] = c->pc;
     c->pc = addr;
 }
 
-void insn_x3(struct Chip8 *c, uint16_t op)
+void c8_isEq(struct Chip8 *c, uint16_t op)
 {
-    puts(__func__);
+    uint8_t regData = c->regs.data[IRX(op)];
+    uint8_t data = INN(op);
+
+    LI(op, "<reg(%x): %02x> == <data: %02x>", regData, data);
+    if (regData == data)
+        c->pc += 2;
 }
 
-void insn_x4(struct Chip8 *c, uint16_t op)
+void c8_isDiff(struct Chip8 *c, uint16_t op)
 {
-    puts(__func__);
+    uint8_t regData = c->regs.data[IRX(op)];
+    uint8_t data = INN(op);
+
+    LI(op, "<reg(%x): %02x> != <data: %02x>", regData, data);
+    if (regData != data)
+        c->pc += 2;
 }
 
 void insn_x5(struct Chip8 *c, uint16_t op)
 {
-    puts(__func__);
+    LI(op, "%c", 0);
+    (void)c;
 }
 
 void c8_set(struct Chip8 *c, uint16_t op)
@@ -84,38 +79,44 @@ void c8_set(struct Chip8 *c, uint16_t op)
     uint8_t reg = IRX(op);
     uint8_t val = INN(op);
 
-    LI("(op: %04x) <%d: %02x>", op, reg, val);
+    LI(op, "<%d: %02x>", reg, val);
     c->regs.data[reg] = val;
 }
 
 void insn_x7(struct Chip8 *c, uint16_t op)
 {
-    puts(__func__);
+    LI(op, "%c", 0);
+    (void)c;
 }
 
 void insn_x8(struct Chip8 *c, uint16_t op)
 {
-    puts(__func__);
+    LI(op, "%c", 0);
+    (void)c;
 }
 
 void insn_x9(struct Chip8 *c, uint16_t op)
 {
-    puts(__func__);
+    LI(op, "%c", 0);
+    (void)c;
 }
 
 void insn_xA(struct Chip8 *c, uint16_t op)
 {
-    puts(__func__);
+    LI(op, "%c", 0);
+    (void)c;
 }
 
 void insn_xB(struct Chip8 *c, uint16_t op)
 {
-    puts(__func__);
+    LI(op, "%c", 0);
+    (void)c;
 }
 
 void insn_xC(struct Chip8 *c, uint16_t op)
 {
-    puts(__func__);
+    LI(op, "%c", 0);
+    (void)c;
 }
 
 void c8_display(struct Chip8 *c, uint16_t op)
@@ -124,12 +125,11 @@ void c8_display(struct Chip8 *c, uint16_t op)
     uint8_t startY = c->regs.data[IRY(op)] % SCR_HEIGHT;
     uint8_t size = IN(op);
 
-    LI("(op: %04x) <Y: %02x> <X: %02x> <size: %u>", op, startY, startX, size);
-    dumpRegs(&c->regs);
+    LI(op, "<Y: %02x> <X: %02x> <size: %u>", startY, startX, size);
     c->regs.data[vF] = 0;
     for (uint8_t y = 0; y != size && startY + y != SCR_HEIGHT; y += 1) {
         uint8_t row = c->memory.beginProg[c->regs.addr + y];
-        for (uint8_t x = 0; x != sizeof(x) && startX + x != SCR_WIDTH; x += 1) {
+        for (uint8_t x = 0; x != 8 && startX + x != SCR_WIDTH; x += 1) {
             uint8_t pix = (row >> (7 - x)) & 1;
             if (!pix)
                 continue;
@@ -146,10 +146,12 @@ void c8_display(struct Chip8 *c, uint16_t op)
 
 void insn_xE(struct Chip8 *c, uint16_t op)
 {
-    puts(__func__);
+    LI(op, "%c", 0);
+    (void)c;
 }
 
 void insn_xF(struct Chip8 *c, uint16_t op)
 {
-    puts(__func__);
+    LI(op, "%c", 0);
+    (void)c;
 }
