@@ -4,18 +4,18 @@
 static void dumpRegs(const struct Regs *r)
 {
     printf("\e[1m*** Regs\e[0m\n\e[1maddr\e[0m:\t<%d>\n", r->addr);
-    printf("\e[1mdata\e[0m:\t<%d", r->data[v0]);
+    printf("\e[1mdata\e[0m:\t<%02x", r->data[v0]);
     for (uint8_t i = v1; i != vMax; i += 1)
-        printf(", %d", r->data[i]);
+        printf(", %02x", r->data[i]);
     printf(">\n\n");
 }
 
 static void dumpStack(const struct Stack *s)
 {
     printf("\e[1m*** Stack\e[0m\n");
-    printf("\e[1msp\e[0m:\t<%d>\n\e[1mctt\e[0m:\t<%d", s->sp, s->stack[0]);
+    printf("\e[1msp\e[0m:\t<%d>\n\e[1mctt\e[0m:\t<%02x", s->sp, s->stack[0]);
     for (uint8_t i = 1; i < s->sp; i += 1)
-        printf(", %d", s->stack[i]);
+        printf(", %02x", s->stack[i]);
     printf(">\n\n");
 }
 
@@ -35,7 +35,7 @@ static uint16_t getPosYX(uint16_t y, uint16_t x)
 
 static void dumpRAM(const struct RAM *r)
 {
-    printf("\e[1m*** Memory\e[0m\n");
+    printf("\e[1m*** Memory\e[0m: %zu\n", r->progSize);
     for (uint16_t y = 0; y != lines; y += 1) {
         printf("\e[1m%04x\e[0m:\t", getY(y));
         for (uint16_t x = 0; x != line_sz; x += 1) {
