@@ -7,13 +7,17 @@ void innnSet(struct Chip8 *c, uint16_t op)
     c->regs.addr = INNN(op);
 }
 
-void insn_xB(struct Chip8 *c, uint16_t op)
+void randomC8(struct Chip8 *c, uint16_t op)
 {
-    LI(op, "%c", 0);
-    (void)c;
+    int max = INN(op);
+    int reg = IRX(op);
+    int rnd = rand();
+
+    c->regs.data[reg] = rnd & max;
+    LI(op, "<target: %x> <rand: %x> <max: %02x> <res: %02x>", reg, rnd, max, c->regs.data[reg]);
 }
 
-void insn_xC(struct Chip8 *c, uint16_t op)
+void jumpWithOffset(struct Chip8 *c, uint16_t op)
 {
     LI(op, "%c", 0);
     (void)c;

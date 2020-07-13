@@ -24,6 +24,7 @@ typedef void (*opfn)(struct Chip8 *c, uint16_t op);
 
 /* Flow */
 void jump(struct Chip8 *c, uint16_t op);
+void jumpWithOffset(struct Chip8 *c, uint16_t op);
 void call(struct Chip8 *c, uint16_t op);
 //void _return(struct Chip8 *c, uint16_t op);
 
@@ -38,6 +39,7 @@ void xnnSet(struct Chip8 *c, uint16_t op); /* Sets data reg(X) with NN */
 void innnSet(struct Chip8 *c, uint16_t op); /* Sets addr reg(i) with NNN */
 void xnnAdd(struct Chip8 *c, uint16_t op);
 void doLogicAndMathOP(struct Chip8 *c, uint16_t op);
+void randomC8(struct Chip8 *c, uint16_t op);
 
 /* Graphical */
 //void clear(struct Chip8 *c, uint16_t op);
@@ -46,8 +48,6 @@ void display(struct Chip8 *c, uint16_t op);
 /* Misc */
 void clear_or_return(struct Chip8 *c, uint16_t op);
 
-void insn_xB(struct Chip8 *c, uint16_t op);
-void insn_xC(struct Chip8 *c, uint16_t op);
 void insn_xE(struct Chip8 *c, uint16_t op);
 void insn_xF(struct Chip8 *c, uint16_t op);
 
@@ -55,6 +55,7 @@ void insn_xF(struct Chip8 *c, uint16_t op);
     static const opfn MAJORS_TAB[MAJORS] = {    \
         /* Inconditional */                     \
         [0x1] = jump,                           \
+        [0xB] = jumpWithOffset,                 \
         [0x2] = call,                           \
         /* Conditional */                       \
         [0x3] = xnnSkipEqual,                   \
@@ -66,12 +67,11 @@ void insn_xF(struct Chip8 *c, uint16_t op);
         [0x6] = xnnSet,                         \
         [0x7] = xnnAdd,                         \
         [0x8] = doLogicAndMathOP,               \
+        [0xC] = randomC8,                       \
         /* Graphical */                         \
         [0xD] = display,                        \
         /* Misc */                              \
         [0x0] = clear_or_return,                \
-        [0xB] = insn_xB,                        \
-        [0xC] = insn_xC,                        \
         [0xE] = insn_xE,                        \
         [0xF] = insn_xF                         \
     }

@@ -2,6 +2,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <time.h>
 #include <unistd.h>
 #include <stdint.h>
 #include <string.h>
@@ -42,6 +43,7 @@ static int loadProgInMem(char const *fp, uint8_t *memory, size_t *sz)
 
 int initChip8(struct Chip8 *c, char const *fp)
 {
+    srand(time(NULL));
     initDefaultValues(c);
     if (loadProgInMem(fp, c->memory.beginProg, &c->memory.progSize))
         return 1;
