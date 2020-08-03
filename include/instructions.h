@@ -79,7 +79,7 @@ void insn_xF(struct Chip8 *c, uint16_t op);
 #include <stdio.h>
 #define LI(op, ...)                                     \
     do {                                                \
-        printf("\e[1m%s\e[0m<%04X>:\t", __func__, op);  \
+        printf("%s<\e[1m%04X\e[0m>:\t", __func__, op);  \
         printf(__VA_ARGS__);                            \
         printf("\n");                                   \
     } while (0)

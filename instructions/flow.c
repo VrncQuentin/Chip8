@@ -53,6 +53,7 @@ void display(struct Chip8 *c, uint16_t op)
             uint8_t pix = (row >> (7 - x)) & 1;
             if (!pix)
                 continue;
+            printf("hi\n");
             if (c->screen[startY + y][startX + x]) {
                 c->screen[startX + y][startX + x] = 0;
                 c->regs.data[vF] = 1;
