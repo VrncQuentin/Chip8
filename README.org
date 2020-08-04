@@ -7,7 +7,8 @@ This is a toy project to introduce myself to interpreters & compilers as well as
 The goal is to create:
     - a Chip8 interpreter, /also refered as 'VM' in the following document (and code)/.
     - a pseudo-assembly chip8 compiler.
-    - a graphical mode for the interpreter.
+
+The main work is currently done on the C++ branch. I first implemented the interpreter in C and I'm not transitioning to C++ while adding a GUI built on SFML.
 
 * Getting Started
 ** Installation
