@@ -1,9 +1,12 @@
 #ifndef C8_GUI_RECT_HPP
 #define C8_GUI_RECT_HPP
 
+// STL
 #include <iostream>
 #include <array>
+// SFML
 #include <SFML/Graphics.hpp>
+// Mine
 #include "Common.hpp"
 #include "utils/Magic.hpp"
 

@@ -14,8 +14,8 @@ namespace Chip8::GUI::Subwin {
             : rect_(ri)
             {
                 name_.setString(name);
-                name_.setCharacterSize(Chip8::GUI::Magic::Fonts::DefaultSize);
                 name_.setFillColor(Chip8::GUI::Magic::Colors::Text);
+                name_.setCharacterSize(Chip8::GUI::Magic::Fonts::DefaultSize);
             }
         ~ASubwin() = default;
 
