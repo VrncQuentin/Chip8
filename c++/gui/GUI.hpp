@@ -8,9 +8,8 @@
 #include <SFML/Window.hpp>
 // Mine
 #include "Common.hpp"
-#include "subwins/Game.hpp"
-#include "subwins/Menu.hpp"
-#include "subwins/Stats.hpp"
+#include "utils/Magic.hpp"
+#include "subwins/ASubwin.hpp"
 
 namespace Chip8::GUI {
 
@@ -32,14 +31,11 @@ namespace Chip8::GUI {
 
     private:
         sf::RenderWindow win_;
+        std::array<Subwin::ASubwin, Chip8::GUI::Magic::Windows::SubwinCount> subs_;
         sf::Event ev_;
-        // std::array<Subwin::ASubwin, 3> subs_;
-        Subwin::Game game_;
-        Subwin::Menu menu_;
-        Subwin::Stats stats_;
     };
 
-    sf::RenderWindow& operator<<(sf::RenderWindow &win, Subwin::ASubwin& sub);
+    sf::RenderWindow& operator<<(sf::RenderWindow &win, const Subwin::ASubwin& sub);
 }
 
 #endif /* C8_GUI_HPP */

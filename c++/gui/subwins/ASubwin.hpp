@@ -21,16 +21,6 @@ namespace Chip8::GUI::Subwin {
     };
 
     // class ASubwin {
-    // public:
-    //     explicit ASubwin(const sf::Vector2f& size, const sf::Vector2f& pos)
-    //         : rect_(size)
-    //         {
-    //             rect_.setPosition(pos);
-    //             rect_.setOutlineColor();
-    //             rect_.setFillColor();
-    //             rect_.setOutlineThickness(Chip8::GUI::Magic::OutlineThickness);
-    //         }
-    //     ~ASubwin() = default;
 
     // public:
     //     ASubwin& setText(Chip8::GUI::Text txt, const std::string &name) noexcept
@@ -53,11 +43,9 @@ namespace Chip8::GUI::Subwin {
     //         }
 
     // public:
-    //     const sf::RectangleShape& getRect() const noexcept {return rect_;}
     //     const sf::Text& getText() const noexcept {return txt_.getText();}
 
     // private:
-    //     sf::RectangleShape rect_;
     //     Chip8::GUI::Text txt_;
     // };
 }

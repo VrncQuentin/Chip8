@@ -44,6 +44,7 @@ namespace Chip8::GUI::Magic {
                 .y = 10
             };
         }
+        static constexpr int SubwinCount = 3;
     }
 
     namespace Colors {
