@@ -8,10 +8,10 @@ namespace Chip8::GUI::Magic {
 
     namespace Windows {
         namespace Names {
-            static const std::string Main = "Chip8 Interpreter";
-            static const std::string Game = "No game loaded";
-            static const std::string Menu = "Interpreter's Menu";
-            static const std::string Stats = "Interpreter's Stats";
+            static constexpr auto Main = "Chip8 Interpreter";
+            static constexpr auto Game = "No game loaded";
+            static constexpr auto Menu = "Interpreter's Menu";
+            static constexpr auto Stats = "Interpreter's Stats";
         }
 
         namespace Sizes {
@@ -55,7 +55,7 @@ namespace Chip8::GUI::Magic {
 
     namespace Fonts {
         static constexpr unsigned int DefaultSize = 10;
-        static const std::string DefaultPath = "gui/static/SCP-Regular.ttf";
+        static constexpr auto DefaultPath = "gui/static/SCP-Regular.ttf";
     }
 
 }

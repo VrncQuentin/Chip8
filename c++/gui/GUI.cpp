@@ -14,7 +14,7 @@ GUI::GUI()
       subs_{Subwin::Game(), Subwin::Stats(), Subwin::Menu()}
 {
     if (!font_.loadFromFile(Magic::Fonts::DefaultPath))
-        throw Errors::Font("failed to load font from " + Magic::Fonts::DefaultPath);
+        throw Errors::Font("failed to load font from " + std::string(Magic::Fonts::DefaultPath));
     for (auto& sub : subs_)
         sub.setFont(font_);
 }
