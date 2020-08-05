@@ -31,6 +31,7 @@ namespace Chip8::GUI {
 
     private:
         sf::RenderWindow win_;
+        sf::Font font_;
         std::array<Subwin::ASubwin, Chip8::GUI::Magic::Windows::SubwinCount> subs_;
         sf::Event ev_;
     };

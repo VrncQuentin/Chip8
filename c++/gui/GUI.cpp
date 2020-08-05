@@ -1,15 +1,23 @@
+// STL
 #include <iostream>
+// Mine
 #include "GUI.hpp"
 #include "subwins/Game.hpp"
 #include "subwins/Menu.hpp"
 #include "subwins/Stats.hpp"
+#include "utils/Exception.hpp"
 
 using namespace Chip8::GUI;
 
 GUI::GUI()
     : win_(sf::VideoMode(Size.x, Size.y), Magic::Windows::Names::Main),
       subs_{Subwin::Game(), Subwin::Stats(), Subwin::Menu()}
-{}
+{
+    if (!font_.loadFromFile(Magic::Fonts::DefaultPath))
+        throw Errors::Font("failed to load font from " + Magic::Fonts::DefaultPath);
+    for (auto& sub : subs_)
+        sub.setFont(font_);
+}
 
 GUI::~GUI()
 {
@@ -49,5 +57,6 @@ bool GUI::isOpen() const noexcept
 sf::RenderWindow& Chip8::GUI::operator<<(sf::RenderWindow &win, const Subwin::ASubwin& sub)
 {
     win.draw(sub.getRect());
+    win.draw(sub.getName());
     return win;
 }

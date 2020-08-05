@@ -14,7 +14,7 @@ namespace Chip8::GUI::Subwin {
         };
 
     public:
-        Menu() : ASubwin(ri) {}
+        Menu() : ASubwin(ri, Chip8::GUI::Magic::Windows::Names::Menu) {}
         ~Menu() = default;
     };
 }

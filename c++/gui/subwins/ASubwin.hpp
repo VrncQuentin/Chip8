@@ -10,44 +10,26 @@ namespace Chip8::GUI::Subwin {
 
     class ASubwin {
     public:
-        explicit ASubwin(const Chip8::GUI::Rect::Info& ri) : rect_(ri) {}
+        explicit ASubwin(const Chip8::GUI::Rect::Info& ri, const std::string& name)
+            : rect_(ri)
+            {
+                name_.setString(name);
+                name_.setCharacterSize(Chip8::GUI::Magic::Fonts::DefaultSize);
+                name_.setFillColor(Chip8::GUI::Magic::Colors::Text);
+            }
         ~ASubwin() = default;
 
     public:
+        void setFont(const sf::Font& f) noexcept {name_.setFont(f);}
+
+    public:
         const Chip8::GUI::Rect& getRect() const noexcept {return rect_;}
+        const sf::Text& getName() const noexcept {return name_;}
 
     private:
         Chip8::GUI::Rect rect_;
+        sf::Text name_;
     };
-
-    // class ASubwin {
-
-    // public:
-    //     ASubwin& setText(Chip8::GUI::Text txt, const std::string &name) noexcept
-    //         {
-    //             txt_ = txt;
-    //             setTextString(name);
-    //             return *this;
-    //         }
-
-    //     ASubwin& setTextString(const std::string &msg) noexcept
-    //         {
-    //             txt_.setString(msg);
-    //             return *this;
-    //         }
-
-    //     ASubwin& setTextPosition(float x, float y) noexcept
-    //         {
-    //             txt_.setPosition(x, y);
-    //             return *this;
-    //         }
-
-    // public:
-    //     const sf::Text& getText() const noexcept {return txt_.getText();}
-
-    // private:
-    //     Chip8::GUI::Text txt_;
-    // };
 }
 
 #endif /* C8_GUI_SUBWIN_HPP */

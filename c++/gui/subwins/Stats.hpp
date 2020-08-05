@@ -14,7 +14,7 @@ namespace Chip8::GUI::Subwin {
         };
 
     public:
-        Stats() : ASubwin(ri) {}
+        Stats() : ASubwin(ri, Chip8::GUI::Magic::Windows::Names::Stats) {}
         ~Stats() = default;
     };
 }

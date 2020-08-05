@@ -14,7 +14,7 @@ namespace Chip8::GUI::Subwin {
         };
 
     public:
-        Game() : ASubwin(ri) {}
+        Game() : ASubwin(ri, Chip8::GUI::Magic::Windows::Names::Game) {}
         ~Game() = default;
     };
 }
