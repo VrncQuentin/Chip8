@@ -5,7 +5,7 @@
 using namespace Chip8::GUI;
 
 GUI::GUI()
-    : win_(sf::VideoMode(Size.x, Size.y), Magic::WinName)
+    : win_(sf::VideoMode(Size.x, Size.y), Magic::Windows::Names::Main)
 {}
 
 GUI::~GUI()
@@ -24,7 +24,7 @@ void GUI::run()
 
 void GUI::draw()
 {
-    win_.clear(Magic::FillColor);
+    win_.clear(Magic::Colors::Filler);
     win_ << game_ << menu_ << stats_;
     win_.display();
 }

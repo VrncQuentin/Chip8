@@ -9,14 +9,13 @@ namespace Chip8::GUI {
 
     class Text {
     public:
-        Text() = default;
-        Text(const std::string& fontPath)
+        Text(const std::string& fontPath = Chip8::GUI::Magic::Fonts::DefaultPath)
             {
                 if (!f_.loadFromFile(fontPath))
                     throw Errors::Font("Failed to load font" + fontPath);
                 t_.setFont(f_);
-                t_.setFillColor(Chip8::GUI::Magic::NameFontColor);
-                t_.setCharacterSize(10);
+                t_.setFillColor(Chip8::GUI::Magic::Colors::Text);
+                t_.setCharacterSize(Chip8::GUI::Magic::Fonts::DefaultSize);
             }
         ~Text() = default;
 

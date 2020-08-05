@@ -16,7 +16,7 @@ namespace Chip8::GUI {
 
     class GUI {
     public:
-        static constexpr Chip8::Common::v2i Size{800, 600};
+        static constexpr Chip8::Common::v2i Size = Chip8::GUI::Magic::Windows::Sizes::GUI;
 
     public:
         GUI();

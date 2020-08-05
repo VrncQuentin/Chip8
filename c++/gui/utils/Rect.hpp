@@ -27,9 +27,9 @@ namespace Chip8::GUI {
 
     public:
         Rect& setBorder(
-            sf::Color inner = Chip8::GUI::Magic::FillColor,
-            sf::Color border = Chip8::GUI::Magic::BorderColor,
-            float size = Chip8::GUI::Magic::BorderSize) noexcept
+            sf::Color inner = Chip8::GUI::Magic::Colors::Filler,
+            sf::Color border = Chip8::GUI::Magic::Colors::Border,
+            float size = Chip8::GUI::Magic::Windows::Sizes::Borders) noexcept
             {
                 setFillColor(inner);
                 setOutlineColor(border);
