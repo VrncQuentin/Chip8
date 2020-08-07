@@ -54,9 +54,3 @@ bool GUI::isOpen() const noexcept
     return win_.isOpen();
 }
 
-sf::RenderWindow& Chip8::GUI::operator<<(sf::RenderWindow &win, const Subwin::ASubwin& sub)
-{
-    win.draw(sub.getRect());
-    win.draw(sub.getName());
-    return win;
-}

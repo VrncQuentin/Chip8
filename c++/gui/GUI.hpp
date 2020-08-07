@@ -15,7 +15,7 @@ namespace Chip8::GUI {
 
     class GUI {
     public:
-        static constexpr Chip8::Common::v2i Size = Chip8::GUI::Magic::Windows::Sizes::GUI;
+        const sf::Vector2f Size = Chip8::GUI::Magic::Windows::Sizes::GUI;
 
     public:
         GUI();
@@ -35,8 +35,5 @@ namespace Chip8::GUI {
         std::array<Subwin::ASubwin, Chip8::GUI::Magic::Windows::SubwinCount> subs_;
         sf::Event ev_;
     };
-
-    sf::RenderWindow& operator<<(sf::RenderWindow &win, const Subwin::ASubwin& sub);
 }
-
 #endif /* C8_GUI_HPP */
