@@ -2,34 +2,44 @@
 #define C8_GUI_SUBWIN_HPP
 
 #include <SFML/Graphics.hpp>
-#include "GUI.hpp"
-#include "utils/Rect.hpp"
-// #include "utils/Text.hpp"
 
 namespace Chip8::GUI::Subwin {
 
+    class Name {
+    public:
+        Name(const std::string &name, const sf::Vector2f& winPos) noexcept;
+        ~Name() = default;
+
+    public:
+        Name& setFont(const sf::Font& f) noexcept;
+
+    public:
+        const sf::RectangleShape& getRect() const noexcept;
+        const sf::Text& getText() const noexcept;
+
+    private:
+        sf::RectangleShape rect_;
+        sf::Text text_;
+    };
+
     class ASubwin {
     public:
-        explicit ASubwin(const Chip8::GUI::Rect::Info& ri, const std::string& name)
-            : rect_(ri)
-            {
-                name_.setString(name);
-                name_.setFillColor(Chip8::GUI::Magic::Colors::Text);
-                name_.setCharacterSize(Chip8::GUI::Magic::Fonts::DefaultSize);
-            }
+        explicit ASubwin(const sf::Vector2f& size, const sf::Vector2f& pos, const std::string& name);
         ~ASubwin() = default;
 
     public:
-        void setFont(const sf::Font& f) noexcept {name_.setFont(f);}
+        const sf::RectangleShape& getWin() const noexcept;
+        const Name& getName() const noexcept;
 
     public:
-        const Chip8::GUI::Rect& getRect() const noexcept {return rect_;}
-        const sf::Text& getName() const noexcept {return name_;}
+        ASubwin& setFont(const sf::Font& f) noexcept;
 
     private:
-        Chip8::GUI::Rect rect_;
-        sf::Text name_;
+        sf::RectangleShape win_;
+        Name name_;
     };
+
+    sf::RenderWindow& operator<<(sf::RenderWindow &win, const ASubwin& sub);
 }
 
 #endif /* C8_GUI_SUBWIN_HPP */
