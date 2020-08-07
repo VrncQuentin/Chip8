@@ -8,13 +8,10 @@ namespace Chip8::GUI::Subwin {
     class Menu : public ASubwin
     {
     public:
-        static constexpr Chip8::GUI::Rect::Info ri = {
-            Chip8::GUI::Magic::Windows::Sizes::Menu,
-            Chip8::GUI::Magic::Windows::Pos::Menu,
-        };
-
-    public:
-        Menu() : ASubwin(ri, Chip8::GUI::Magic::Windows::Names::Menu) {}
+        Menu() : ASubwin(Chip8::GUI::Magic::Windows::Sizes::Menu,
+                         Chip8::GUI::Magic::Windows::Pos::Menu,
+                         Chip8::GUI::Magic::Windows::Names::Menu)
+            {}
         ~Menu() = default;
     };
 }

@@ -8,13 +8,10 @@ namespace Chip8::GUI::Subwin {
     class Game : public ASubwin
     {
     public:
-        static constexpr Chip8::GUI::Rect::Info ri = {
-            Chip8::GUI::Magic::Windows::Sizes::Game,
-            Chip8::GUI::Magic::Windows::Pos::Game
-        };
-
-    public:
-        Game() : ASubwin(ri, Chip8::GUI::Magic::Windows::Names::Game) {}
+        Game() : ASubwin(Chip8::GUI::Magic::Windows::Sizes::Game,
+                         Chip8::GUI::Magic::Windows::Pos::Game,
+                         Chip8::GUI::Magic::Windows::Names::Game)
+            {}
         ~Game() = default;
     };
 }
