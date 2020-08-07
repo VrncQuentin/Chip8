@@ -18,28 +18,28 @@ namespace Chip8::GUI::Magic {
             static constexpr float Borders = 1;
             static constexpr int WinSep = 10;
             /* .x = width, .y = height */
-            static constexpr Chip8::Common::v2i GUI{.x = 800, .y = 600};
-            static constexpr Chip8::Common::v2i Game{.x = 512, .y = 256};
-            static constexpr Chip8::Common::v2i Menu{
+            static const sf::Vector2f GUI{.x = 800, .y = 600};
+            static const sf::Vector2f Game{.x = 512, .y = 256};
+            static const sf::Vector2f Menu{
                 .x = Game.x,
                 .y = GUI.y - Game.y - WinSep * 3
             };
-            static constexpr Chip8::Common::v2i Stats{
+            static const sf::Vector2f Stats{
                 .x  = GUI.x - Game.x - WinSep * 3,
                 .y = GUI.y - WinSep * 2
             };
         }
 
         namespace Pos {
-            static constexpr Chip8::Common::v2i Game{
+            static const sf::Vector2f Game{
                 .x = Sizes::WinSep,
                 .y = Sizes::WinSep
             };
-            static constexpr Chip8::Common::v2i Menu{
+            static const sf::Vector2f Menu{
                 .x = 10,
                 .y = Game.y + Sizes::Game.y + Sizes::WinSep
             };
-            static constexpr Chip8::Common::v2i Stats{
+            static const sf::Vector2f Stats{
                 .x = Game.x + Sizes::Game.x + Sizes::WinSep,
                 .y = 10
             };
@@ -49,6 +49,7 @@ namespace Chip8::GUI::Magic {
 
     namespace Colors {
         static const sf::Color Filler = sf::Color(50, 50, 50, 175); // Dark grey
+        static const sf::Color FillerFull = sf::Color(50, 50, 50, 255); // Dark grey
         static const sf::Color Border = sf::Color(246, 148, 0); // Dark Orange
         static const sf::Color Text = sf::Color(246, 148, 0); // Dark Orange
     }
