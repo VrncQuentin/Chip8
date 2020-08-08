@@ -1,6 +1,9 @@
 #include "Chip8.hpp"
 
-// using namespace Chip8;
+Chip8::Chip8::Chip8()
+    : interp_(),
+      gui_(interp_)
+{}
 
 void Chip8::Chip8::run()
 {
