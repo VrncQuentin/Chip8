@@ -3,6 +3,7 @@
 
 #include "common/Common.hpp"
 #include "gui/subwins/ASubwin.hpp"
+#include "interpreter/Stack.hpp"
 
 using namespace Chip8::Common;
 
@@ -10,29 +11,27 @@ namespace Chip8::GUI::Subwin {
 
     class Stats : public ASubwin
     {
-        // using InfoIdx = enum {Insn, Regs, Stack, Timers, Max};
-        // using Info = std::array<sf::Text, Max>;
+    public:
+        using DisplaysIdx = enum {Insn, Regs, Stack, Timers, Max};
+        using Displays = std::array<sf::Text, Max>;
+
     public:
         static constexpr int winLeftPad = 5;
     public:
-        Stats();
+        Stats(const Chip8::Interpreter::StackInfo& stack);
         ~Stats() = default;
 
     public:
-        Stats& setFont(const sf::Font& f) noexcept;
-        Stats& setInstruction(const Opcode cur, const Addr pc) noexcept;
-        // Stats& setRegs(const Chip8::Common::Byte cur, int idx) noexcept;
+        void setFont(const sf::Font& f) noexcept;
+        void updateInstruction(const Opcode cur, const Addr pc) noexcept;
+        void updateStack() noexcept;
 
     public:
-        const sf::Text& getInstruction() const noexcept;
+        [[nodiscard]] const Displays& getDisplays() const noexcept;
 
     private:
-        // Info info_;
-        sf::Text insn_; /* Current Instruction + PC*/
-        // sf::Text regs_; /* v0 - vF + vI */
-        // Chip8::Interpreter::Regs regsRef;
-        // sf::Text stack_; /* s0 - sF + SP */
-        // sf::Text timers_; /* Delay + Sound */
+        Displays disp_;
+        const Chip8::Interpreter::StackInfo& stack_;
     };
     sf::RenderWindow& operator<<(sf::RenderWindow& win, const Stats& sub);
 }

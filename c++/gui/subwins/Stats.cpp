@@ -5,56 +5,62 @@
 
 using namespace Chip8::GUI::Subwin;
 
-Stats::Stats()
+Stats::Stats(const Chip8::Interpreter::StackInfo& stack)
     : ASubwin(Chip8::GUI::Magic::Windows::Sizes::Stats,
               Chip8::GUI::Magic::Windows::Pos::Stats,
-              Chip8::GUI::Magic::Windows::Names::Stats)
+              Chip8::GUI::Magic::Windows::Names::Stats),
+      stack_(stack)
 {
-    const auto& win = getPosition();
-    const auto yPos = win.y + winLeftPad;
-    const sf::Vector2f posInsn(win.x + 10, yPos);
-    // const sf::Vector2f posInsn(win.x + 30, yPos);
-
     // Init Instruction;
-    insn_.setPosition(posInsn);
-    insn_.setFillColor(Chip8::GUI::Magic::Colors::Text);
-    insn_.setCharacterSize(Chip8::GUI::Magic::Fonts::DefaultSize + 5);
-    // Init Regs;
-    // regs_.setPosition(pos);
-    // regs_.setFillColor(Chip8::GUI::Magic::Colors::Text);
-    // regs_.setCharacterSize(Chip8::GUI::Magic::Fonts::DefaultSize + 3);
-    // TMP
-    setInstruction(0, 0);
-    // for (int x = 0; x != 0x10; x++)
-    //     setRegs(x, 0);
+    disp_[Insn].setPosition(Chip8::GUI::Magic::Windows::Pos::StatsInsn);
+    disp_[Insn].setFillColor(Chip8::GUI::Magic::Colors::Text);
+    disp_[Insn].setCharacterSize(Chip8::GUI::Magic::Fonts::DefaultSize + 5);
+    // Init Stack;
+    disp_[Stack].setPosition(Chip8::GUI::Magic::Windows::Pos::StatsStack);
+    disp_[Stack].setFillColor(Chip8::GUI::Magic::Colors::Text);
+    disp_[Stack].setCharacterSize(Chip8::GUI::Magic::Fonts::DefaultSize + 3);
 
+    // TMP
+    updateInstruction(0, 0xAAA);
+    updateStack();
 }
 
-Stats& Stats::setFont(const sf::Font& f) noexcept
+void Stats::setFont(const sf::Font& f) noexcept
 {
     name_.setFont(f);
-    insn_.setFont(f);
-    return *this;
+    for (auto& disp : disp_)
+        disp.setFont(f);
 }
 
-Stats& Stats::setInstruction(const Opcode cur, const Addr pc) noexcept
+static void setHexa(std::ostringstream& oss)
+{
+    oss << std::setbase(16) << std::uppercase;
+}
+
+void Stats::updateInstruction(const Opcode cur, const Addr pc) noexcept
 {
     std::ostringstream oss;
 
-    oss << "Instruction:\t0x" << std::setbase(16) << cur << std::endl;
-    oss << "PC:\t\t\t 0x" << std::setbase(16) << pc;
-    insn_.setString(oss.str());
-    return *this;
+    setHexa(oss);
+    oss << "Instruction:\t0x" << cur << std::endl;
+    oss << "PC:\t\t\t 0x" << pc;
+    disp_[Insn].setString(oss.str());
 }
 
-// Stats& Stats::setRegs(const Chip8::Common::Byte cur, int idx) noexcept
-// {
-    
-// }
-
-const sf::Text& Stats::getInstruction() const noexcept
+void Stats::updateStack() noexcept
 {
-    return insn_;
+    std::ostringstream oss;
+
+    setHexa(oss);
+    for (int i = 0; const auto stack : stack_.getStack())
+        oss << "s" << i++ << ": 0x" << stack << std::endl;
+    oss << "SP: 0x" << stack_.getSP();
+    disp_[Stack].setString(oss.str());
+}
+
+const Stats::Displays& Stats::getDisplays() const noexcept
+{
+    return disp_;
 }
 
 sf::RenderWindow& Chip8::GUI::Subwin::operator<<(sf::RenderWindow& win, const Stats& sub)
@@ -63,6 +69,7 @@ sf::RenderWindow& Chip8::GUI::Subwin::operator<<(sf::RenderWindow& win, const St
     const auto& name = sub.getName();
     win.draw(name.getRect());
     win.draw(name.getText());
-    win.draw(sub.getInstruction());
+    for (const auto& disp : sub.getDisplays())
+        win.draw(disp);
     return win;
 }
