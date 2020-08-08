@@ -25,7 +25,7 @@ namespace Chip8::GUI::Magic {
                 .y = GUI.y - Game.y - WinSep * 3
             };
             static const sf::Vector2f Stats{
-                .x  = GUI.x - Game.x - WinSep * 3,
+                .x = GUI.x - Game.x - WinSep * 3,
                 .y = GUI.y - WinSep * 2
             };
         }
@@ -42,6 +42,16 @@ namespace Chip8::GUI::Magic {
             static const sf::Vector2f Stats{
                 .x = Game.x + Sizes::Game.x + Sizes::WinSep,
                 .y = 10
+            };
+            static constexpr int leftPad = 5;
+            static const sf::Vector2f StatsInsn{
+                .x = Stats.x + leftPad,
+                .y = Stats.y + 5
+            };
+
+            static const sf::Vector2f StatsStack{
+                .x = Stats.x + Sizes::Stats.x / 2 + leftPad,
+                .y = Stats.y + 50
             };
         }
         static constexpr int SubwinCount = 3;
