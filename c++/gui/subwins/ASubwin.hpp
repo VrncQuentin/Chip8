@@ -30,12 +30,14 @@ namespace Chip8::GUI::Subwin {
     public:
         const sf::RectangleShape& getWin() const noexcept;
         const Name& getName() const noexcept;
+        const sf::Vector2f& getPosition() const noexcept;
 
     public:
         ASubwin& setFont(const sf::Font& f) noexcept;
 
-    private:
+    protected:
         sf::RectangleShape win_;
+        const sf::Vector2f pos_;
         Name name_;
     };
 

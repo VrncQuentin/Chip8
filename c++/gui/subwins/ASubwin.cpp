@@ -1,5 +1,5 @@
-#include "subwins/ASubwin.hpp"
-#include "utils/Magic.hpp"
+#include "gui/subwins/ASubwin.hpp"
+#include "gui/utils/Magic.hpp"
 
 using namespace Chip8::GUI::Subwin;
 
@@ -35,6 +35,7 @@ const sf::Text& Name::getText() const noexcept
 
 ASubwin::ASubwin(const sf::Vector2f& size, const sf::Vector2f& pos, const std::string& name)
     : win_(size),
+      pos_(pos),
       name_(name, pos)
 {
     win_.setPosition(pos);
@@ -51,6 +52,11 @@ const sf::RectangleShape& ASubwin::getWin() const noexcept
 const Name& ASubwin::getName() const noexcept
 {
     return name_;
+}
+
+const sf::Vector2f& ASubwin::getPosition() const noexcept
+{
+    return pos_;
 }
 
 ASubwin& ASubwin::setFont(const sf::Font& f) noexcept
