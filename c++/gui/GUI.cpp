@@ -6,8 +6,9 @@
 
 using namespace Chip8::GUI;
 
-GUI::GUI()
-    : win_(sf::VideoMode(Size.x, Size.y), Magic::Windows::Names::Main)
+GUI::GUI(const Chip8::Interpreter::Interp& interp)
+    : win_(sf::VideoMode(Size.x, Size.y), Magic::Windows::Names::Main),
+      stats_(interp.getStack())
 {
     if (!font_.loadFromFile(Magic::Fonts::DefaultPath))
         throw Errors::Font("failed to load font from " + std::string(Magic::Fonts::DefaultPath));

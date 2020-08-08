@@ -8,6 +8,7 @@
 #include <SFML/Window.hpp>
 // Mine
 #include "common/Common.hpp"
+#include "interpreter/Interpreter.hpp"
 #include "gui/utils/Magic.hpp"
 #include "gui/subwins/Game.hpp"
 #include "gui/subwins/Menu.hpp"
@@ -20,7 +21,7 @@ namespace Chip8::GUI {
         const sf::Vector2f Size = Chip8::GUI::Magic::Windows::Sizes::GUI;
 
     public:
-        GUI();
+        GUI(const Chip8::Interpreter::Interp& interp);
         ~GUI();
 
     public:
