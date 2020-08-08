@@ -19,12 +19,13 @@ PCOMMON			=	common
 PGUI			=	gui
 PSUBWIN			=	$(PGUI)/subwins
 PINTERP			=	interpreter
+PSRC			=	src
 #################
 
 
 #Flags.
 #################
-CPPFLAGS		=	-iquote .
+CPPFLAGS		=	-iquote . -iquote $(PSRC)
 CFLAGS			=	-Wall -Wextra -Wshadow -std=2a
 LDFLAGS			=	-lsfml-graphics -lsfml-window -lsfml-system
 #################
@@ -32,16 +33,22 @@ LDFLAGS			=	-lsfml-graphics -lsfml-window -lsfml-system
 
 # Source Files.
 #################
+# Sources
 MAIN			=	main.cpp
+SRC				=	Chip8.cpp
+# GUI
 GUI				=	GUI.cpp
 SUBWINS			=\
 	ASubwin.cpp	\
 	Stats.cpp	\
+# Interp
 
+# Final
 ALL				=\
+	$(addprefix $(PSRC)/, $(MAIN))			\
+	$(addprefix $(PSRC)/, $(SRC))			\
 	$(addprefix $(PGUI)/, $(GUI))			\
 	$(addprefix $(PSUBWIN)/, $(SUBWINS))	\
-	$(MAIN)
 #################
 
 
