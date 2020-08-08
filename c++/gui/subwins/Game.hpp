@@ -1,7 +1,7 @@
 #ifndef C8_GUI_GAME_HPP
 #define C8_GUI_GAME_HPP
 
-#include "subwins/ASubwin.hpp"
+#include "gui/subwins/ASubwin.hpp"
 
 namespace Chip8::GUI::Subwin {
 
