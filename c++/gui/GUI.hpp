@@ -7,9 +7,11 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 // Mine
-#include "Common.hpp"
-#include "utils/Magic.hpp"
-#include "subwins/ASubwin.hpp"
+#include "common/Common.hpp"
+#include "gui/utils/Magic.hpp"
+#include "gui/subwins/Game.hpp"
+#include "gui/subwins/Menu.hpp"
+#include "gui/subwins/Stats.hpp"
 
 namespace Chip8::GUI {
 
@@ -22,7 +24,6 @@ namespace Chip8::GUI {
         ~GUI();
 
     public:
-        void run();
         void draw();
         [[nodiscard]] bool handleEvents() noexcept;
 
@@ -32,8 +33,11 @@ namespace Chip8::GUI {
     private:
         sf::RenderWindow win_;
         sf::Font font_;
-        std::array<Subwin::ASubwin, Chip8::GUI::Magic::Windows::SubwinCount> subs_;
+        Subwin::Game game_;
+        Subwin::Menu menu_;
+        Subwin::Stats stats_;
         sf::Event ev_;
+        bool drawFlag;
     };
 }
 #endif /* C8_GUI_HPP */

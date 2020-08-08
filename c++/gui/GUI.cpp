@@ -2,21 +2,19 @@
 #include <iostream>
 // Mine
 #include "GUI.hpp"
-#include "subwins/Game.hpp"
-#include "subwins/Menu.hpp"
-#include "subwins/Stats.hpp"
 #include "utils/Exception.hpp"
 
 using namespace Chip8::GUI;
 
 GUI::GUI()
-    : win_(sf::VideoMode(Size.x, Size.y), Magic::Windows::Names::Main),
-      subs_{Subwin::Game(), Subwin::Stats(), Subwin::Menu()}
+    : win_(sf::VideoMode(Size.x, Size.y), Magic::Windows::Names::Main)
 {
     if (!font_.loadFromFile(Magic::Fonts::DefaultPath))
         throw Errors::Font("failed to load font from " + std::string(Magic::Fonts::DefaultPath));
-    for (auto& sub : subs_)
-        sub.setFont(font_);
+    game_.setFont(font_);
+    menu_.setFont(font_);
+    stats_.setFont(font_);
+    drawFlag = true;
 }
 
 GUI::~GUI()
@@ -24,21 +22,15 @@ GUI::~GUI()
     win_.close();
 }
 
-void GUI::run()
-{
-    while (isOpen()) {
-        if (handleEvents())
-            return;
-        draw();
-    }
-}
-
 void GUI::draw()
 {
+    if (!drawFlag)
+        return;
     win_.clear(Magic::Colors::Filler);
-    for (const auto& sub : subs_)
-        win_ << sub;
+    win_ << game_ << menu_;
+    win_ << stats_;
     win_.display();
+    drawFlag = false;
 }
 
 bool GUI::handleEvents() noexcept
