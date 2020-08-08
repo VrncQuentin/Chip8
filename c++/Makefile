@@ -26,7 +26,7 @@ PSRC			=	src
 #Flags.
 #################
 CPPFLAGS		=	-iquote . -iquote $(PSRC)
-CFLAGS			=	-Wall -Wextra -Wshadow -std=2a
+CXXFLAGS		=	-Wall -Wextra -Wshadow -std=c++2a
 LDFLAGS			=	-lsfml-graphics -lsfml-window -lsfml-system
 #################
 
