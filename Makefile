@@ -5,70 +5,37 @@
 ## Makefile
 ##
 
-# Fundamentals.
 #################
 SHELL			=	/bin/bash
 RM				=	-@rm -rf
-CC				=	gcc
-MAKE			=	@make
+BUILD_DIR		=	.build
+BIN				=	chip8
 #################
-
-# Colors.
-#################
-RESET			=	\033[0m
-CYAN			=	\033[1;94m
-#################
-
-# Paths.
-#################
-PBUILD			=	.build
-PBIN			=	/usr/bin
-#################
-
-# Names.
-#################
-C8VM			=	c8vm
-C8C				=	c8c
-#################
-
 
 # Main Rules
-.DEFAULT: build
-build: setup-build
-	-@cmake $(OPTIONS) -B $(PBUILD)
-	$(MAKE) --no-print-directory -C $(PBUILD)
+all:	$(BIN)
+$(BIN):
+	@mkdir -p $(BUILD_DIR)
+	@cmake $(OPTIONS) -B $(BUILD_DIR)
+	@make --no-print-directory -C $(BUILD_DIR)
+	@mv $(BUILD_DIR)/$(BIN) .
+#	@make -j `nproc` --no-print-directory -C $(BUILD_DIR)
 
-debug: fclean
-debug: OPTIONS += -DUSE_DEBUG=ON
-debug: .DEFAULT
-
-release: fclean
-release: OPTIONS += -DUSE_PROD=ON
-release: .DEFAULT
-
-install: release
-	@echo -e "$(CYAN)Moving $(BIN) to $(PBIN) (requires sudo)$(RESET)"
-	@sudo mv $(BIN) $(PBIN)
-
-uninstall:
-	@echo -e "$(CYAN)Removing $(BIN) from $(PBIN) (requires sudo)$(RESET)"
-	@sudo rm $(PBIN)/$(BIN)
+debug: OPTIONS	+=	-DUSE_DEBUG=ON
+debug:	all
 # [END] Main Rules
+
 
 # Clean Rules
 clean:
-	$(RM) $(PBUILD)
+	$(RM) $(BUILD_DIR)
 
 fclean: clean
-	$(RM) $(C8VM) $(C8C)
+	$(RM) $(BIN)
 # [END] Clean Rules
 
 # Misc
-re:	fclean
-re: .DEFAULT
-
-setup-build:
-	-@mkdir -p $(PBUILD)
-
-.PHONY: build debug release install uninstall clean fclean re setup-build
+re:	fclean all
+.PHONY: re fclean clean all debug $(BIN)
+.DEFAULT: all
 # [END] Misc
