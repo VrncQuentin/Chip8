@@ -5,81 +5,30 @@
 ## Makefile
 ##
 
-# Fundamentals.
 #################
 SHELL			=	/bin/bash
 RM				=	-@rm -rf
-CC				=	gcc
-MAKE			=	@make
-#################
-
-# Paths.
-#################
-PINC			=	include
-PINSTR			=	instructions
-PSRC			=	src
-#################
-
-#Flags.
-#################
-CPPFLAGS		+=	-iquote $(PINC)
-CFLAGS			+=	-Wall -Wextra -Wshadow
-LDFLAGS			+=
-#################
-
-
-# Source Files.
-#################
-MAIN			=	main.c
-
-INSTR			=\
-	equality.c		\
-	flow.c			\
-	math_logic.c	\
-
-SRCS			=\
-	initChip8.c		\
-	runChip8.c		\
-	dumpChip8.c		\
-	instructions.c	\
-	drawScreen.c	\
-
-SRC				=\
-	$(addprefix $(PINSTR)/, $(INSTR))	\
-	$(addprefix $(PSRC)/, $(SRCS))		\
-	$(MAIN)
-#################
-
-
-# Conversions to .o.
-#################
-OBJ				=	$(SRC:.c=.o)
-#################
-
-# Names.
-#################
-BIN				=	c8i
+BUILD_DIR		=	.build
+BIN				=	chip8
 #################
 
 # Main Rules
 all:	$(BIN)
-$(BIN):	$(OBJ)
-	$(CC) $(OBJ) -o $(BIN) $(LDFLAGS)
+$(BIN):
+	@mkdir -p $(BUILD_DIR)
+	@cmake $(OPTIONS) -B $(BUILD_DIR)
+	@make --no-print-directory -C $(BUILD_DIR)
+	@mv $(BUILD_DIR)/$(BIN) .
+#	@make -j `nproc` --no-print-directory -C $(BUILD_DIR)
 
-debug:	CPPFLAGS += -DSCREEN
-debug:	CFLAGS += -g3
+debug: OPTIONS	+=	-DUSE_DEBUG=ON
 debug:	all
 # [END] Main Rules
 
 
-# Conversion Rules
-%.o:	%.c
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
-#[END] Conversion Rules
-
 # Clean Rules
 clean:
-	$(RM) $(OBJ)
+	$(RM) $(BUILD_DIR)
 
 fclean: clean
 	$(RM) $(BIN)
@@ -87,5 +36,6 @@ fclean: clean
 
 # Misc
 re:	fclean all
-.PHONY: re fclean clean all debug
+.PHONY: re fclean clean all debug $(BIN)
+.DEFAULT: all
 # [END] Misc

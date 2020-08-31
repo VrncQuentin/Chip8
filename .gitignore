@@ -1,4 +1,5 @@
-c8i
+chip8
+.idea
 # Prerequisites
 *.d
 *.md
