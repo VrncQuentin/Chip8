@@ -1,9 +1,10 @@
 chip8
 .idea
+cmake-build-debug
+
 # Prerequisites
 *.d
 *.md
-tests
 
 # Object files
 *.o
