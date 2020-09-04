@@ -2,6 +2,7 @@
 #define C8_CHIP8_HPP
 
 #include <string>
+#include <map>
 #include "interpreter/Memory.hpp"
 #include "interpreter/Regs.hpp"
 #include "interpreter/Stack.hpp"
@@ -30,8 +31,8 @@ namespace Chip8 {
         static constexpr auto decodeNNN   = [](const uint16_t op) -> uint16_t {return  op & 0x0FFFu;};
 
     private:
-        using instrFnPtr = void(Chip8::*)(const uint16_t) noexcept;
-        static const instrFnPtr jumpTable[];
+        using instrTable = std::map<uint16_t, void (Chip8::*)(const uint16_t) noexcept>;
+        static const instrTable instructions;
 
         void clear_or_return(uint16_t op) noexcept;
         void jump(uint16_t op) noexcept;
@@ -42,7 +43,18 @@ namespace Chip8 {
         void skipIfRegNeqReg(uint16_t op) noexcept;
         void setRegWithNN(uint16_t op) noexcept;
         void addNNtoReg(uint16_t op) noexcept;
+
         void doMathOperations(uint16_t op) noexcept;
+        void doMathSet(uint16_t op) noexcept;
+        void doMathOr(uint16_t op) noexcept;
+        void doMathAnd(uint16_t op) noexcept;
+        void doMathXor(uint16_t op) noexcept;
+        void doMathAdd(uint16_t op) noexcept;
+        void doMathSubXY(uint16_t op) noexcept;
+        void doMathSubYX(uint16_t op) noexcept;
+        void doMathSHR(uint16_t op) noexcept;
+        void doMathSHL(uint16_t op) noexcept;
+
         void setAddrReg(uint16_t op) noexcept;
         void jumpWithOffset(uint16_t op) noexcept;
         void random(uint16_t op) noexcept;
