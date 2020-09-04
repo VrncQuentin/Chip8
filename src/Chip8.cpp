@@ -33,25 +33,6 @@ void Chip8::Chip8::draw() noexcept {
     win_.display();
 }
 
-const Chip8::Chip8::instrTable Chip8::Chip8::instructions = {
-        {0x0, &Chip8::clear_or_return},
-        {0x1, &Chip8::jump},
-        {0x2, &Chip8::call},
-        {0x3, &Chip8::skipIfRegEqNN},
-        {0x4, &Chip8::skipIfRegNeqNN},
-        {0x5, &Chip8::skipIfRegEqReg},
-        {0x6, &Chip8::setRegWithNN},
-        {0x7, &Chip8::addNNtoReg},
-        {0x8, &Chip8::doMathOperations},
-        {0x9, &Chip8::skipIfRegNeqReg},
-        {0xA, &Chip8::setAddrReg},
-        {0xB, &Chip8::jumpWithOffset},
-        {0xC, &Chip8::random},
-        {0xD, &Chip8::display},
-        {0xE, &Chip8::skipIfKey},
-        {0xF, &Chip8::doMiscOperations}
-};
-
 void Chip8::Chip8::clear_or_return(const uint16_t op) noexcept {
     static constexpr uint16_t CLEAR = 0xE0;
     static constexpr uint16_t RETURN = 0xEE;
@@ -122,35 +103,6 @@ void Chip8::Chip8::addNNtoReg(const uint16_t op) noexcept {
     regs_.addData(howMuch, where);
 }
 
-void Chip8::Chip8::doMathOperations(uint16_t op) noexcept {
-    enum {SET = 0x0, OR = 0x1, AND = 0x2, XOR = 0x3, ADD = 0x4, SUB1 = 0x5, SHIFT1 = 0x6, SUB2 = 0x7, SHIFT2 = 0xE};
-    switch (decodeN(op)) {
-/*
-        case SET: {
-            break;
-        }
-        case : {
-            break;
-        }
-        case : {
-            break;
-        }
-        case : {
-            break;
-        }
-        case : {
-            break;
-        }
-        case : {
-            break;
-        }
-*/
-        default:
-            std::cout << "Unsupported OP: " << std::uppercase << std::setbase(16) << op << std::endl;
-    }
-
-}
-
 void Chip8::Chip8::setAddrReg(const uint16_t op) noexcept {
     regs_.setAddr(decodeNNN(op));
 }
@@ -194,13 +146,55 @@ void Chip8::Chip8::doMiscOperations(uint16_t op) noexcept {
 
 }
 
+const Chip8::Chip8::instrTable Chip8::Chip8::instructions = {
+        {0x0, &Chip8::clear_or_return},
+        {0x1, &Chip8::jump},
+        {0x2, &Chip8::call},
+        {0x3, &Chip8::skipIfRegEqNN},
+        {0x4, &Chip8::skipIfRegNeqNN},
+        {0x5, &Chip8::skipIfRegEqReg},
+        {0x6, &Chip8::setRegWithNN},
+        {0x7, &Chip8::addNNtoReg},
+        {0x8, &Chip8::doMathOperations},
+        {0x9, &Chip8::skipIfRegNeqReg},
+        {0xA, &Chip8::setAddrReg},
+        {0xB, &Chip8::jumpWithOffset},
+        {0xC, &Chip8::random},
+        {0xD, &Chip8::display},
+        {0xE, &Chip8::skipIfKey},
+        {0xF, &Chip8::doMiscOperations}
+};
+
 void Chip8::Chip8::exec(const uint16_t op) noexcept {
     const auto opFamily = decodeMajor(op);
     const auto instrFn = instructions.find(opFamily);
-    if (instrFn == instructions.end()) {
-        std::cout << "Unsupported OP: " << std::uppercase << std::setbase(16) << op << std::endl;
-    } else {
+
+    if (instrFn != instructions.end()) {
         (this->*(instrFn->second))(op);
+    } else {
+        std::cout << "Unsupported OP: " << std::uppercase << std::setbase(16) << op << std::endl;
+    }
+}
+const Chip8::Chip8::instrTable Chip8::Chip8::mathInstructions = {
+        {0x0, &Chip8::Chip8::doMathSet},
+        {0x1, &Chip8::Chip8::doMathOr},
+        {0x2, &Chip8::Chip8::doMathAnd},
+        {0x3, &Chip8::Chip8::doMathXor},
+        {0x4, &Chip8::Chip8::doMathAdd},
+        {0x5, &Chip8::Chip8::doMathSubXY},
+        {0x6, &Chip8::Chip8::doMathSHR},
+        {0x7, &Chip8::Chip8::doMathSubYX},
+        {0xE, &Chip8::Chip8::doMathSHL}
+};
+
+void Chip8::Chip8::doMathOperations(uint16_t op) noexcept {
+    const auto what = decodeN(op);
+    const auto opFn = mathInstructions.find(what);
+
+    if (opFn == instructions.end()) {
+        (this->*(opFn->second))(op);
+    } else {
+        std::cout << "Unsupported OP: " << std::uppercase << std::setbase(16) << op << std::endl;
     }
 }
 

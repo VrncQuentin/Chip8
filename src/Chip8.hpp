@@ -33,6 +33,7 @@ namespace Chip8 {
     private:
         using instrTable = std::map<uint16_t, void (Chip8::*)(const uint16_t) noexcept>;
         static const instrTable instructions;
+        static const instrTable mathInstructions;
 
         void clear_or_return(uint16_t op) noexcept;
         void jump(uint16_t op) noexcept;
