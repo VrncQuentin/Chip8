@@ -12,35 +12,43 @@ namespace Chip8 {
 
     class Chip8 {
     public:
-        Chip8() = default;
+        Chip8();
         ~Chip8() = default;
 
     public:
         [[nodiscard]] bool loadNewGame(const std::string& gamePath) noexcept;
         int run() noexcept;
         void draw() noexcept;
+        void exec(uint16_t op) noexcept;
 
     private:
-        static constexpr auto decodeMajor = [](const uint16_t op)
-                {return static_cast<uint16_t>((op & 0xF000) >> 12);};
+        static constexpr auto decodeMajor = [](const uint16_t op) -> uint16_t {return (op & 0xF000u) >> 12u;};
+        static constexpr auto decodeRegX  = [](const uint16_t op) -> uint16_t {return (op & 0x0F00u) >> 8u;};
+        static constexpr auto decodeRegY  = [](const uint16_t op) -> uint16_t {return (op & 0x00F0u) >> 4u;};
+        static constexpr auto decodeN     = [](const uint16_t op) -> uint16_t {return  op & 0x000Fu;};
+        static constexpr auto decodeNN    = [](const uint16_t op) -> uint16_t {return  op & 0x00FFu;};
+        static constexpr auto decodeNNN   = [](const uint16_t op) -> uint16_t {return  op & 0x0FFFu;};
 
-        static constexpr auto decodeRegX = [](const uint16_t op)
-                {return static_cast<uint16_t>((op & 0x0F00) >> 8);};
+    private:
+        using instrFnPtr = void(Chip8::*)(const uint16_t) noexcept;
+        static const instrFnPtr jumpTable[];
 
-        static constexpr auto decodeRegY = [](const uint16_t op)
-                {return static_cast<uint16_t>((op & 0x00F0) >> 4);};
-
-        static constexpr auto decodeN = [](const uint16_t op)
-                {return  static_cast<uint16_t>(op & 0x000F);};
-
-        static constexpr auto decodeNN = [](const uint16_t op)
-                {return  static_cast<uint16_t>(op & 0x00FF);};
-
-        static constexpr auto decodeNNN = [](const uint16_t op)
-                {return  static_cast<uint16_t>(op & 0x0FFF);};
-
-        void exec(const uint16_t op) noexcept;
-
+        void clear_or_return(uint16_t op) noexcept;
+        void jump(uint16_t op) noexcept;
+        void call(uint16_t op) noexcept;
+        void skipIfRegEqNN(uint16_t op) noexcept;
+        void skipIfRegNeqNN(uint16_t op) noexcept;
+        void skipIfRegEqReg(uint16_t op) noexcept;
+        void skipIfRegNeqReg(uint16_t op) noexcept;
+        void setRegWithNN(uint16_t op) noexcept;
+        void addNNtoReg(uint16_t op) noexcept;
+        void doMathOperations(uint16_t op) noexcept;
+        void setAddrReg(uint16_t op) noexcept;
+        void jumpWithOffset(uint16_t op) noexcept;
+        void random(uint16_t op) noexcept;
+        void display(uint16_t op) noexcept;
+        void skipIfKey(uint16_t op) noexcept;
+        void doMiscOperations(uint16_t op) noexcept;
 
     private:
         Interp::Memory ram_;
