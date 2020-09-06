@@ -17,7 +17,7 @@ namespace Chip8::Interp {
 
     public:
         void set(byte time) noexcept;
-        byte get() const noexcept;
+        [[nodiscard]] byte get() const noexcept;
 
     private:
         byte t_;
