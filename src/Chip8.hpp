@@ -34,6 +34,7 @@ namespace Chip8 {
         using jumpTable = std::map<uint16_t, void (Chip8::*)(const uint16_t) noexcept>;
         static const jumpTable instructions;
         static const jumpTable mathInstructions;
+        static const jumpTable miscInstructions;
 
         void clear_or_return(uint16_t op) noexcept;
         void jump(uint16_t op) noexcept;
@@ -61,7 +62,17 @@ namespace Chip8 {
         void random(uint16_t op) noexcept;
         void display(uint16_t op) noexcept;
         void skipIfKey(uint16_t op) noexcept;
+
         void doMiscOperations(uint16_t op) noexcept;
+        void setRegWithDelayTimer(uint16_t op) noexcept;
+        void setDelayTimerWithReg(uint16_t op) noexcept;
+        void setSoundTimerWithReg(uint16_t op) noexcept;
+        void addRegToAddr(uint16_t op) noexcept;
+        void getKey(uint16_t op) noexcept;
+        void getFontChar(uint16_t op) noexcept;
+        void setInMemWithConversion(uint16_t op) noexcept;
+        void setInMem(uint16_t op) noexcept;
+        void loadFromMem(uint16_t op) noexcept;
 
     private:
         Interp::Memory ram_;
