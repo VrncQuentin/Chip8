@@ -17,6 +17,7 @@ namespace Chip8::Interp {
         void setData(const byte value, const uint16_t reg) noexcept;
         void clearCarry() noexcept;
         void setCarry() noexcept;
+        void setCarry(bool value) noexcept;
         void addData(const byte value, const uint16_t reg) noexcept;
         void setAddr(const addr value) noexcept;
 

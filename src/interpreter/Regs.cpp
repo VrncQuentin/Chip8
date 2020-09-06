@@ -31,3 +31,7 @@ void Regs::clearCarry() noexcept {
 void Regs::setCarry() noexcept {
     data_[vF] = 1;
 }
+
+void Regs::setCarry(bool value) noexcept {
+    data_[vF] = value;
+}
