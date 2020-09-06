@@ -8,8 +8,8 @@ Screen::Screen() {
     for (int height = 0; height != Height; height += 1)
         for (int width = 0; width != Width; width += 1) {
             const auto idx = width + (height * Width);
-            const auto xRectPos = static_cast<const float>(width * PixelSize);
-            const auto yRectPos = static_cast<const float>(height * PixelSize);
+            const auto xRectPos = static_cast<float>(width * PixelSize);
+            const auto yRectPos = static_cast<float>(height * PixelSize);
             scr_[idx] = sf::RectangleShape(base);
             scr_[idx].setPosition(xRectPos, yRectPos);
             scr_[idx].setFillColor(PixOFF);
