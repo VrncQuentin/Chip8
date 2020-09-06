@@ -52,6 +52,7 @@ set(INTERP_SRC
         Regs.cpp
         Memory.cpp
         Stack.cpp
+        Timers.cpp
   )
 foreach (interp_src ${INTERP_SRC})
     set(PROJECT_SOURCES ${PROJECT_SOURCES} ${INTERP_DIR}/${interp_src})
