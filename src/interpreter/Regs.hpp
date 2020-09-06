@@ -2,6 +2,7 @@
 #define C8_INTERP_REGS_HPP
 
 #include "Types.hpp"
+#include "Timers.hpp"
 
 namespace Chip8::Interp {
 
@@ -27,6 +28,8 @@ namespace Chip8::Interp {
     private:
         byte data_[vMax]{};
         addr addr_{};
+        Timer delay_;
+        Timer sound_;
     };
 }
 
