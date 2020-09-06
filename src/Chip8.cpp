@@ -146,7 +146,7 @@ void Chip8::Chip8::doMiscOperations(uint16_t op) noexcept {
 
 }
 
-const Chip8::Chip8::instrTable Chip8::Chip8::instructions = {
+const Chip8::Chip8::jumpTable Chip8::Chip8::instructions = {
         {0x0, &Chip8::clear_or_return},
         {0x1, &Chip8::jump},
         {0x2, &Chip8::call},
@@ -175,7 +175,7 @@ void Chip8::Chip8::exec(const uint16_t op) noexcept {
         std::cout << "Unsupported OP: " << std::uppercase << std::setbase(16) << op << std::endl;
     }
 }
-const Chip8::Chip8::instrTable Chip8::Chip8::mathInstructions = {
+const Chip8::Chip8::jumpTable Chip8::Chip8::mathInstructions = {
         {0x0, &Chip8::Chip8::doMathSet},
         {0x1, &Chip8::Chip8::doMathOr},
         {0x2, &Chip8::Chip8::doMathAnd},
@@ -198,38 +198,79 @@ void Chip8::Chip8::doMathOperations(uint16_t op) noexcept {
     }
 }
 
-void Chip8::Chip8::doMathSet(uint16_t op) noexcept {
-
+void Chip8::Chip8::doMathSet(const uint16_t op) noexcept {
+    const auto vx = decodeRegX(op);
+    const auto valY = regs_.getDataAt(decodeRegY(op));
+    regs_.setData(valY, vx);
 }
 
-void Chip8::Chip8::doMathOr(uint16_t op) noexcept {
-
+void Chip8::Chip8::doMathOr(const uint16_t op) noexcept {
+    const auto vx = decodeRegX(op);
+    const auto valX = regs_.getDataAt(vx);
+    const auto valY = regs_.getDataAt(decodeRegY(op));
+    regs_.setData(valX | valY, vx);
 }
 
-void Chip8::Chip8::doMathAnd(uint16_t op) noexcept {
-
+void Chip8::Chip8::doMathAnd(const uint16_t op) noexcept {
+    const auto vx = decodeRegX(op);
+    const auto valX = regs_.getDataAt(vx);
+    const auto valY = regs_.getDataAt(decodeRegY(op));
+    regs_.setData(valX & valY, vx);
 }
 
-void Chip8::Chip8::doMathXor(uint16_t op) noexcept {
-
+void Chip8::Chip8::doMathXor(const uint16_t op) noexcept {
+    const auto vx = decodeRegX(op);
+    const auto valX = regs_.getDataAt(vx);
+    const auto valY = regs_.getDataAt(decodeRegY(op));
+    regs_.setData(valX ^ valY, vx);
 }
 
-void Chip8::Chip8::doMathAdd(uint16_t op) noexcept {
-
+void Chip8::Chip8::doMathAdd(const uint16_t op) noexcept {
+    const auto vx = decodeRegX(op);
+    const auto valX = regs_.getDataAt(vx);
+    const auto valY = regs_.getDataAt(decodeRegY(op));
+    const uint16_t res = valX + valY;
+    const bool overflow = res > __UINT8_MAX__;
+    regs_.setData(static_cast<byte>(res), vx);
+    regs_.setCarry(overflow);
 }
 
-void Chip8::Chip8::doMathSubXY(uint16_t op) noexcept {
-
+void Chip8::Chip8::doMathSubXY(const uint16_t op) noexcept {
+    const auto vx = decodeRegX(op);
+    const auto valX = regs_.getDataAt(vx);
+    const auto valY = regs_.getDataAt(decodeRegY(op));
+    const auto res = static_cast<int8_t>(valX - valY);
+    const bool notUnderflow = valX > valY; // if we underflow the carry must be 0
+    regs_.setData(static_cast<byte>(res), vx);
+    regs_.setCarry(notUnderflow);
 }
 
-void Chip8::Chip8::doMathSubYX(uint16_t op) noexcept {
-
+void Chip8::Chip8::doMathSubYX(const uint16_t op) noexcept {
+    const auto vx = decodeRegX(op);
+    const auto valX = regs_.getDataAt(vx);
+    const auto valY = regs_.getDataAt(decodeRegY(op));
+    const auto res = static_cast<int8_t>(valY - valX);
+    const bool notUnderflow = valY < valX; // if we underflow the carry must be 0
+    regs_.setData(static_cast<byte>(res), vx);
+    regs_.setCarry(notUnderflow);
 }
 
-void Chip8::Chip8::doMathSHR(uint16_t op) noexcept {
-
+void Chip8::Chip8::doMathSHR(const uint16_t op) noexcept {
+    // CHIP-48 / SUPER-CHIP style shift, we ignore Y
+    const auto vx = decodeRegX(op);
+    const auto valX = regs_.getDataAt(vx);
+    const auto outBit = valX >> 7u;
+    const auto res = static_cast<byte>(valX << 1u);
+    regs_.setData(res, vx);
+    regs_.setCarry(outBit);
 }
 
-void Chip8::Chip8::doMathSHL(uint16_t op) noexcept {
-
+void Chip8::Chip8::doMathSHL(const uint16_t op) noexcept {
+    // CHIP-48 / SUPER-CHIP style shift, we ignore Y
+    const auto vx = decodeRegX(op);
+    const auto valX = regs_.getDataAt(vx);
+    const auto outBit = valX & 1u;
+    const auto res = static_cast<byte>(valX >> 1u);
+    regs_.setData(res, vx);
+    regs_.setCarry(outBit);
 }

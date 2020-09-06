@@ -31,9 +31,9 @@ namespace Chip8 {
         static constexpr auto decodeNNN   = [](const uint16_t op) -> uint16_t {return  op & 0x0FFFu;};
 
     private:
-        using instrTable = std::map<uint16_t, void (Chip8::*)(const uint16_t) noexcept>;
-        static const instrTable instructions;
-        static const instrTable mathInstructions;
+        using jumpTable = std::map<uint16_t, void (Chip8::*)(const uint16_t) noexcept>;
+        static const jumpTable instructions;
+        static const jumpTable mathInstructions;
 
         void clear_or_return(uint16_t op) noexcept;
         void jump(uint16_t op) noexcept;
