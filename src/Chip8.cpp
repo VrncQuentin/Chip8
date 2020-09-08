@@ -298,37 +298,74 @@ void Chip8::Chip8::doMiscOperations(uint16_t op) noexcept {
 
 void Chip8::Chip8::setRegWithDelayTimer(uint16_t op) noexcept {
     const auto vx = decodeRegX(op);
-//    const auto
+    const auto delayValue = regs_.getDelayTimer().get();
+    regs_.setData(delayValue, vx);
 }
 
 void Chip8::Chip8::setDelayTimerWithReg(uint16_t op) noexcept {
-
+    const auto valX = regs_.getDataAt(decodeRegX(op));
+    regs_.setDelayTimer(valX);
 }
 
 void Chip8::Chip8::setSoundTimerWithReg(uint16_t op) noexcept {
-
+    const auto valX = regs_.getDataAt(decodeRegX(op));
+    regs_.setSoundTimer(valX);
 }
 
 void Chip8::Chip8::addRegToAddr(uint16_t op) noexcept {
-
+    const auto valX = regs_.getDataAt(decodeRegX(op));
+    const auto valI = regs_.getAddr();
+    const addr res = valX + valI;
+    regs_.setAddr(res);
 }
 
 void Chip8::Chip8::getKey(uint16_t op) noexcept {
+    const auto what = win_.getInput();
 
+    if (what != GUI::None) {
+        const auto vx = decodeRegX(op);
+        regs_.setData(static_cast<byte>(what), vx);
+    } else {
+        ram_.decrementPC();
+    }
 }
 
 void Chip8::Chip8::getFontChar(uint16_t op) noexcept {
-
+    const auto valX = regs_.getDataAt(decodeRegX(op));
+    regs_.setAddr(valX * 5);
 }
 
 void Chip8::Chip8::setInMemWithConversion(uint16_t op) noexcept {
+    byte valX = regs_.getDataAt(decodeRegX(op));
+    byte buf[3] = {0};
 
+    // Retrieves each digit of valX but reversed, ie: 251 becomes 152
+    for (byte i = 0; valX != 0; i += 1) {
+        buf[i] = valX % 10;
+        valX /= 10;
+    }
+    const auto where = regs_.getAddr();
+    for (byte i = 0; i != 3; i += 1) {
+        ram_.putInMem(where + i, buf[2 - i]); // Store in mem while reversing (hence 2-i)
+    }
 }
 
 void Chip8::Chip8::setInMem(uint16_t op) noexcept {
+    const uint16_t stop = decodeRegX(op) + 1; // + 1 because we loop 'till VX
+    const auto where = regs_.getAddr();
 
+    for (byte i = 0; i != stop; i += 1) {
+        const auto what = regs_.getDataAt(i);
+        ram_.putInMem(where + i, what);
+    }
 }
 
 void Chip8::Chip8::loadFromMem(uint16_t op) noexcept {
+    const uint16_t  stop = decodeRegX(op) + 1; // + 1 becuse we loop 'till VX
+    const auto where = regs_.getAddr();
 
+    for (byte i = 0; i != stop; i += 1) {
+        const auto what = ram_[where + i];
+        regs_.setData(what, i);
+    }
 }
