@@ -5,13 +5,21 @@
 
 namespace Chip8::GUI {
 
-class Window : public sf::RenderWindow {
+
+    enum Input{None = -1, One, Two, Three, C, Four, Five, Six, D, Seven, Eight, Nine, E, A, Zero, B, F};
+
+    class Window : public sf::RenderWindow {
     public:
         Window();
         ~Window() override;
 
     public:
         const sf::Font& getFont() const noexcept;
+        Input getInput() noexcept;
+
+    private:
+        using inputTable = std::map<sf::Event, Input>;
+        static const inputTable azerty;
 
     private:
         sf::Font font_;
