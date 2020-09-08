@@ -35,3 +35,19 @@ void Regs::setCarry() noexcept {
 void Regs::setCarry(bool value) noexcept {
     data_[vF] = value;
 }
+
+void Regs::setDelayTimer(const Chip8::byte time) noexcept {
+    delay_.set(time);
+}
+
+void Regs::setSoundTimer(const Chip8::byte time) noexcept {
+    sound_.set(time);
+}
+
+const Timer &Regs::getDelayTimer() const noexcept {
+    return delay_;
+}
+
+const Timer &Regs::getSoundTimer() const noexcept {
+    return sound_;
+}

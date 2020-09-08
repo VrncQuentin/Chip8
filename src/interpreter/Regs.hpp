@@ -15,15 +15,21 @@ namespace Chip8::Interp {
         ~Regs() = default;
 
     public:
-        void setData(const byte value, const uint16_t reg) noexcept;
+        void setData(byte value, uint16_t reg) noexcept;
+        void addData(byte value, uint16_t reg) noexcept;
+        void setAddr(addr value) noexcept;
+
         void clearCarry() noexcept;
         void setCarry() noexcept;
         void setCarry(bool value) noexcept;
-        void addData(const byte value, const uint16_t reg) noexcept;
-        void setAddr(const addr value) noexcept;
 
-        [[nodiscard]] byte getDataAt(const uint16_t reg) const noexcept;
+        [[nodiscard]] byte getDataAt(uint16_t reg) const noexcept;
         [[nodiscard]] addr getAddr() const noexcept;
+
+        void setDelayTimer(byte time) noexcept;
+        void setSoundTimer(byte time) noexcept;
+        [[nodiscard]] const Timer& getDelayTimer() const noexcept;
+        [[nodiscard]] const Timer& getSoundTimer() const noexcept;
 
     private:
         byte data_[vMax]{};
