@@ -20,10 +20,13 @@ namespace Chip8::Interp {
         [[nodiscard]] addr getPC() const noexcept;
         void setPC(addr jumpTo) noexcept;
         void incrementPC() noexcept;
+        void decrementPC() noexcept;
         void show() noexcept;
 
+        void putInMem(addr where, byte what) noexcept;
+
     public:
-        byte operator[](const addr idx) const noexcept;
+        byte operator[](addr idx) const noexcept;
 
     private:
         void loadFonts() noexcept;

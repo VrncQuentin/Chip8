@@ -86,3 +86,15 @@ void Memory::show() noexcept {
             puts("");
     }
 }
+
+void Memory::putInMem(Chip8::addr where, Chip8::byte what) noexcept {
+    buf_[where] = what;
+}
+
+void Memory::decrementPC() noexcept {
+    pc_ -= 2;
+}
+
+Chip8::byte Memory::getFromMem(Chip8::addr where) const noexcept {
+    return buf_[where];
+}
