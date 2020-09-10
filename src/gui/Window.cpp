@@ -17,23 +17,23 @@ const sf::Font &Window::getFont() const noexcept {
     return font_;
 }
 
-const Window::inputTable Window::azerty = {
+const Window::inputLayout Window::azerty{
         {sf::Keyboard::Num1, Input::One},
         {sf::Keyboard::Num2, Input::Two},
         {sf::Keyboard::Num3, Input::Three},
         {sf::Keyboard::Num4, Input::C},
-        {sf::Keyboard::A, Input::Four},
-        {sf::Keyboard::Z, Input::Five},
-        {sf::Keyboard::E, Input::Six},
-        {sf::Keyboard::R, Input::D},
-        {sf::Keyboard::Q, Input::Seven},
-        {sf::Keyboard::S, Input::Eight},
-        {sf::Keyboard::D, Input::Nine},
-        {sf::Keyboard::F, Input::E},
-        {sf::Keyboard::Z, Input::A},
-        {sf::Keyboard::X, Input::Zero},
-        {sf::Keyboard::C, Input::B},
-        {sf::Keyboard::V, Input::F},
+        {sf::Keyboard::A,    Input::Four},
+        {sf::Keyboard::Z,    Input::Five},
+        {sf::Keyboard::E,    Input::Six},
+        {sf::Keyboard::R,    Input::D},
+        {sf::Keyboard::Q,    Input::Seven},
+        {sf::Keyboard::S,    Input::Eight},
+        {sf::Keyboard::D,    Input::Nine},
+        {sf::Keyboard::F,    Input::E},
+        {sf::Keyboard::Z,    Input::A},
+        {sf::Keyboard::X,    Input::Zero},
+        {sf::Keyboard::C,    Input::B},
+        {sf::Keyboard::V,    Input::F}
 };
 
 Input Window::getInput() noexcept {
@@ -41,7 +41,7 @@ Input Window::getInput() noexcept {
     while (pollEvent(ev)) {
         if (ev.type != sf::Event::KeyPressed)
             continue;
-        const auto which = azerty.find(ev);
+        const auto which = azerty.find(ev.key.code);
         if (which != azerty.end())
             return which->second;
     }

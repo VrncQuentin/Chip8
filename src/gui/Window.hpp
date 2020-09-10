@@ -1,6 +1,7 @@
 #ifndef C8_GUI_WINDOW_HPP
 #define C8_GUI_WINDOW_HPP
 
+#include <map>
 #include <SFML/Graphics.hpp>
 
 namespace Chip8::GUI {
@@ -18,8 +19,8 @@ namespace Chip8::GUI {
         Input getInput() noexcept;
 
     private:
-        using inputTable = std::map<sf::Event, Input>;
-        static const inputTable azerty;
+        using inputLayout = std::map<sf::Keyboard::Key, Input>;
+        static const inputLayout azerty;
 
     private:
         sf::Font font_;
