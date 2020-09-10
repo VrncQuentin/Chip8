@@ -33,7 +33,7 @@ int Chip8::Chip8::run()  noexcept {
     return 0;
 }
 
-const Chip8::Chip8::jumpTable Chip8::Chip8::instructions = {
+const Chip8::Chip8::jumpTable Chip8::Chip8::instructions{
         {0x0, &Chip8::clear_or_return},
         {0x1, &Chip8::jump},
         {0x2, &Chip8::call},
@@ -133,7 +133,7 @@ void Chip8::Chip8::addNNtoReg(const uint16_t op) noexcept {
     regs_.addData(howMuch, where);
 }
 
-const Chip8::Chip8::jumpTable Chip8::Chip8::mathInstructions = {
+const Chip8::Chip8::jumpTable Chip8::Chip8::mathInstructions{
         {0x0, &Chip8::Chip8::doMathSet},
         {0x1, &Chip8::Chip8::doMathOr},
         {0x2, &Chip8::Chip8::doMathAnd},
@@ -270,10 +270,29 @@ void Chip8::Chip8::display(const uint16_t op) noexcept {
 }
 
 void Chip8::Chip8::skipIfKey(uint16_t op) noexcept {
+    static constexpr uint16_t IS_EQUAL = 0x9E;
+    static constexpr uint16_t IS_DIFF  = 0xA1;
+    const auto how = decodeNN(op);
+    const auto what = win_.getInput();
+    const auto valX = regs_.getDataAt(decodeRegX(op));
 
+    switch (how) {
+        case IS_EQUAL: {
+            if (what == valX)
+                ram_.incrementPC();
+            break;
+        }
+        case IS_DIFF: {
+            if (what != valX)
+                ram_.incrementPC();
+            break;
+        }
+        default:
+            std::cout << "Unsupported OP: " << std::uppercase << std::setbase(16) << op << std::endl;
+    }
 }
 
-const Chip8::Chip8::jumpTable Chip8::Chip8::miscInstructions = {
+const Chip8::Chip8::jumpTable Chip8::Chip8::miscInstructions{
         {0x07, &Chip8::setRegWithDelayTimer},
         {0x15, &Chip8::setDelayTimerWithReg},
         {0x18, &Chip8::setSoundTimerWithReg},
